@@ -1,0 +1,289 @@
+:root {
+    --bg-color: #F4F4F4;
+    --text-color: #111111;
+    --accent-color: #CCFF00;
+    /* Acid Green/Yellow */
+    --secondary-color: #888888;
+    --line-color: #E0E0E0;
+
+    --font-heading: "Syncopate", sans-serif;
+    --font-body: "DM Mono", monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Navigation --- */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    mix-blend-mode: difference;
+    /* Ensures visibility on both light/dark */
+}
+
+.nav-logo a {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: white;
+    /* Difference mode makes this black on white */
+    letter-spacing: -1px;
+}
+
+.nav-menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: white;
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    border: 1px solid white;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.line {
+    width: 16px;
+    height: 2px;
+    background-color: white;
+}
+
+/* --- Hero Section --- */
+#hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.hero-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.parallax-layer.bg-graphics {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    /* Taller for parallax */
+    z-index: 0;
+    opacity: 0.6;
+}
+
+.contours {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-text-container {
+    position: absolute;
+    top: 15%;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: 8vw;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-weight: 700;
+}
+
+.hero-title .outline {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--text-color);
+}
+
+/* --- Canvas / Subject --- */
+.canvas-wrapper {
+    position: relative;
+    /* SCALE UP 200% - Formerly 45vh/60vh */
+    width: 80vh;
+    height: 95vh;
+    z-index: 10;
+    margin-top: 5vh;
+}
+
+/* Digital Grid & Noise Overlay for Cinematic Feel */
+.parallax-layer.bg-graphics::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Tech Grid */
+    background-image:
+        linear-gradient(rgba(17, 17, 17, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(17, 17, 17, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 1;
+    pointer-events: none;
+    mask-image: linear-gradient(to bottom, black 20%, transparent 90%);
+    -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 90%);
+}
+
+.parallax-layer.bg-graphics::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Cinematic Grain */
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.fallback-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0;
+    /* Hidden by default if canvas works, logic in JS can toggle */
+}
+
+/* --- Hero Footer UI --- */
+.hero-footer-ui {
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    width: 100%;
+    padding: 0 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    pointer-events: none;
+    /* Let clicks pass through empty space */
+}
+
+.hero-footer-ui>* {
+    pointer-events: auto;
+}
+
+.stat-box {
+    border: 1px solid var(--line-color);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stat-box .label {
+    font-size: 0.7rem;
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.stat-box .value {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.cta-button {
+    background-color: var(--accent-color);
+    color: black;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-5px);
+    background-color: #b3ff00;
+}
+
+.scroll-indicator {
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(10px);
+    }
+}
+
+/* --- Animations --- */
+.hero-title,
+.stat-box,
+.cta-button,
+.canvas-wrapper {
+    opacity: 0;
+    /* Controlled by GSAP */
+}
