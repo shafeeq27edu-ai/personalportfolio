@@ -10,15 +10,15 @@ const setupAnimations = () => {
     // Register ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
 
-    // Initialize Lenis (Smooth Scroll)
+    // Initialize Lenis (Smooth Scroll) - Tuned for "Luxurious/Heavy" feel
     const lenis = new Lenis({
-        duration: 1.2,
+        duration: 1.5, // Slower, heavier stop
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         direction: 'vertical',
         gestureDirection: 'vertical',
         smooth: true,
-        mouseMultiplier: 1,
-        smoothTouch: false,
+        mouseMultiplier: 0.8, // Less sensitive = smoother feel
+        smoothTouch: true, // Force smooth on touch too
         touchMultiplier: 2,
     });
 
@@ -35,23 +35,23 @@ const setupAnimations = () => {
         opacity: 1,
         y: 0,
         scale: 1,
-        duration: 1.5,
-        ease: "power3.out", // Smooth, premium ease (no elastic wobble)
+        duration: 2.2, // Cinematic Slow-Motion
+        ease: "expo.out",
         delay: 0.2
     })
         .to(".canvas-wrapper", {
             opacity: 1,
             scale: 1,
-            duration: 1.5,
-            ease: "power3.out"
-        }, "-=1.3")
+            duration: 2.0,
+            ease: "expo.out"
+        }, "-=2.0")
         .to(".stat-box, .cta-button, .scroll-indicator", {
             opacity: 1,
             y: 0,
-            duration: 1.0,
+            duration: 1.5, // Slower reveal
             stagger: 0.1,
             ease: "power2.out"
-        }, "-=1.0");
+        }, "-=1.5");
 
     // Idle Floating Animation for UI
     gsap.to(".stat-box.right", {
