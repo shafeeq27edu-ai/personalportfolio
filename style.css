@@ -99,7 +99,12 @@ nav {
     /* Taller for parallax */
     z-index: 0;
     opacity: 0.6;
+    opacity: 0.4;
+    animation: slow-rotate 120s linear infinite;
+    /* Slow & Smooth */
 }
+
+/* SCANLINES REMOVED */
 
 .contours {
     width: 100%;
@@ -143,9 +148,12 @@ nav {
 /* --- Canvas / Subject --- */
 .canvas-wrapper {
     position: relative;
-    /* SCALE UP 200% - Formerly 45vh/60vh */
-    width: 80vh;
-    height: 95vh;
+    width: 100%;
+    height: 85vh;
+    /* Optimized fit */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 10;
     margin-top: 5vh;
 }
@@ -167,6 +175,39 @@ nav {
     pointer-events: none;
     mask-image: linear-gradient(to bottom, black 20%, transparent 90%);
     -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 90%);
+}
+
+/* Editorial Side Lines */
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(17, 17, 17, 0.05);
+    z-index: 0;
+}
+
+body::before {
+    left: 10%;
+}
+
+body::after {
+    right: 10%;
+}
+
+/* Vignette Overlay */
+.hero-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 30%, rgba(244, 244, 244, 0.8) 90%);
+    z-index: 5;
+    pointer-events: none;
 }
 
 .parallax-layer.bg-graphics::before {
@@ -240,6 +281,46 @@ canvas {
     font-family: var(--font-heading);
     font-size: 1rem;
     font-weight: 700;
+}
+
+/* Status Pulse Animation */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent-color);
+    animation: pulse-glow 1.5s infinite;
+}
+
+.pulse-line {
+    height: 1px;
+    width: 30px;
+    background: linear-gradient(90deg, var(--accent-color), transparent);
+}
+
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(204, 255, 0, 0.7);
+        opacity: 1;
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(204, 255, 0, 0);
+        opacity: 0;
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(204, 255, 0, 0);
+        opacity: 0;
+    }
 }
 
 .cta-button {

@@ -35,48 +35,65 @@ const setupAnimations = () => {
         opacity: 1,
         y: 0,
         scale: 1,
-        duration: 2.2, // Longer duration for more drama
-        ease: "elastic.out(1, 0.4)", // Very bouncy
-        delay: 0.1
+        duration: 1.5,
+        ease: "power3.out", // Smooth, premium ease (no elastic wobble)
+        delay: 0.2
     })
         .to(".canvas-wrapper", {
             opacity: 1,
             scale: 1,
-            duration: 2.0,
-            ease: "elastic.out(1, 0.5)"
-        }, "-=2.0") // Overlap significantly
+            duration: 1.5,
+            ease: "power3.out"
+        }, "-=1.3")
         .to(".stat-box, .cta-button, .scroll-indicator", {
             opacity: 1,
             y: 0,
-            duration: 1.2,
-            stagger: 0.15,
-            ease: "expo.out"
-        }, "-=1.5");
+            duration: 1.0,
+            stagger: 0.1,
+            ease: "power2.out"
+        }, "-=1.0");
 
-    // Parallax Effect - 200% Intensity
+    // Idle Floating Animation for UI
+    gsap.to(".stat-box.right", {
+        y: -10,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+    });
+
+    gsap.to(".stat-box:not(.right)", {
+        y: 10,
+        duration: 4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 1
+    });
+
+    // Parallax Effect - Stabilized
     gsap.to(".parallax-layer", {
-        yPercent: 50,
-        rotation: 5, // Subtle rotation
+        yPercent: 15, // Subtle, ambient movement
+        rotation: 0, // No rotation on scroll
         ease: "none",
         scrollTrigger: {
             trigger: "#hero",
             start: "top top",
             end: "bottom top",
-            scrub: 0.5 // Weighted feel
+            scrub: true // Instant response (no lag)
         }
     });
 
     gsap.to(".hero-title", {
-        yPercent: 80, // Move fast
+        yPercent: 30,
         opacity: 0,
-        filter: "blur(15px)", // Cinematic Blur
-        scale: 1.5, // Zoom out towards viewer
+        // Removed heavy filters for performance
         ease: "none",
         scrollTrigger: {
             trigger: "#hero",
             start: "top top",
             end: "bottom top",
-            scrub: 0.5
+            scrub: true
         }
     });
 };
