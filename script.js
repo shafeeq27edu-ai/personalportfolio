@@ -1,24 +1,92 @@
 import * as THREE from "three";
-import {
-    vertexShader,
-    FluidFragmentShader,
-    displayFragmentShader
-} from "./shaders.js";
+// Shaders embedded in LiquidMorph class
 
-// --- GSAP & Lenis Setup ---
+// --- Cinematic Preloader ---
+const runPreloader = () => {
+    const tl = gsap.timeline();
+    const counter = { val: 0 };
+    const counterElement = document.querySelector('.loader-counter');
+
+    // Disable Scroll Initially
+    document.body.style.overflow = 'hidden';
+
+    // Prepare Hero Elements (Hide them)
+    gsap.set(".hero-title, .stat-box, .cta-button, .scroll-indicator, .nav-logo, .nav-menu-btn", {
+        y: 30,
+        opacity: 0
+    });
+
+    tl.to(counter, {
+        val: 100,
+        duration: 2.2,
+        ease: "power2.inOut",
+        onUpdate: () => {
+            if (counterElement) counterElement.textContent = Math.floor(counter.val).toString().padStart(2, '0');
+        }
+    })
+        .to('.loader-bar', {
+            scaleX: 1,
+            duration: 2.5, /* Sync with counter roughly */
+            ease: "expo.inOut"
+        }, "<")
+        .to('.loader-content', {
+            y: -50,
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.in"
+        })
+        .to('#preloader', {
+            yPercent: -100,
+            duration: 1.2,
+            ease: "expo.inOut",
+            onComplete: () => {
+                // Re-enable Scroll
+                document.body.style.overflow = '';
+                // Trigger Hero Entry
+                playHeroEntry();
+            }
+        });
+};
+
+const playHeroEntry = () => {
+    const tl = gsap.timeline();
+
+    tl.to(".nav-logo, .nav-menu-btn", {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "expo.out",
+        stagger: 0.2
+    })
+        .to(".hero-title", {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1.8,
+            ease: "expo.out"
+        }, "-=0.8")
+        .to(".stat-box, .cta-button, .scroll-indicator", {
+            y: 0,
+            opacity: 1,
+            duration: 1.2,
+            stagger: 0.1,
+            ease: "power2.out"
+        }, "-=1.4");
+};
+
 const setupAnimations = () => {
     // Register ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
 
-    // Initialize Lenis (Smooth Scroll) - Tuned for "Luxurious/Heavy" feel
+    // Initialize Lenis (Smooth Scroll)
     const lenis = new Lenis({
-        duration: 1.5, // Slower, heavier stop
+        duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         direction: 'vertical',
         gestureDirection: 'vertical',
         smooth: true,
-        mouseMultiplier: 0.8, // Less sensitive = smoother feel
-        smoothTouch: true, // Force smooth on touch too
+        mouseMultiplier: 1,
+        smoothTouch: false,
         touchMultiplier: 2,
     });
 
@@ -28,66 +96,224 @@ const setupAnimations = () => {
     }
     requestAnimationFrame(raf);
 
+    // --- Navigation Logic ---
+    // --- Navigation Logic (Updated: Aesthetic Pop-Up) ---
+    const menuBtn = document.querySelector('.nav-menu-btn');
+    const navOverlay = document.querySelector('#nav-overlay');
+    const navLinks = document.querySelectorAll('.nav-link span');
+    let isMenuOpen = false;
+
+    if (menuBtn && navOverlay) {
+        menuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+
+            if (isMenuOpen) {
+                // Open: Scale + Fade In (Pop-up)
+                gsap.set(navOverlay, { display: 'flex', pointerEvents: 'auto' });
+                gsap.to(navOverlay, {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "expo.out"
+                });
+
+                // Stagger Links
+                gsap.fromTo(navLinks,
+                    { y: 50, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power2.out", delay: 0.1 }
+                );
+
+                menuBtn.querySelector('span').textContent = "CLOSE";
+            } else {
+                // Close
+                gsap.to(navOverlay, {
+                    scale: 0.9,
+                    opacity: 0,
+                    duration: 0.4,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        gsap.set(navOverlay, { pointerEvents: 'none' });
+                    }
+                });
+                menuBtn.querySelector('span').textContent = "MENU";
+            }
+        });
+
+        // Close on outside click
+        document.addEventListener('click', (e) => {
+            if (isMenuOpen && !navOverlay.contains(e.target) && !menuBtn.contains(e.target)) {
+                menuBtn.click();
+            }
+        });
+    }
+
+    // --- Navigation Logic (Gen-Z Panels) ---
+    const menuBtn = document.querySelector('.nav-menu-btn');
+    const navOverlay = document.querySelector('#nav-overlay');
+    const navLinks = document.querySelectorAll('.nav-link'); // Note: Removed 'span' selector to target link
+    const panelContainer = document.querySelector('#panel-container');
+    const panels = document.querySelectorAll('.content-panel');
+    const closeBtns = document.querySelectorAll('.panel-close');
+    let isMenuOpen = false;
+
+    // Open/Close Main Menu
+    if (menuBtn && navOverlay) {
+        menuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                // Open Menu
+                gsap.to(navOverlay, { y: "0%", duration: 1.2, ease: "expo.inOut" });
+                gsap.fromTo(navLinks,
+                    { y: 100, opacity: 0, rotateX: -20 },
+                    { y: 0, opacity: 1, rotateX: 0, duration: 1, stagger: 0.1, ease: "power3.out", delay: 0.4 }
+                );
+                menuBtn.querySelector('span').textContent = "CLOSE";
+            } else {
+                // Close Menu
+                gsap.to(navOverlay, { y: "-100%", duration: 0.8, ease: "expo.inOut" });
+                menuBtn.querySelector('span').textContent = "MENU";
+            }
+        });
+    }
+
+    // Handle Menu Link Clicks (Open Panels)
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = link.dataset.target;
+            openPanel(target);
+        });
+    });
+
+    // Handle Panel Closing
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            closeAllPanels();
+        });
+    });
+
+    // Career CTA (Journey Button) Integration
+    const careerCta = document.querySelector('.cta-button');
+    if (careerCta) {
+        careerCta.addEventListener('click', (e) => {
+            e.preventDefault();
+            // User requirement: "Career in right corner... opens SAME Career section"
+            // If the CTA says "Journey" but maps to "Career", we open the career panel.
+            // Or does "Journey" map to the horizontal scroll?
+            // "Career in menu ... Career in right corner -> BOTH SAME Career section".
+            // Implementation: Open 'career' panel.
+            openPanel('career');
+        });
+    }
+
+    function openPanel(targetId) {
+        const panel = document.querySelector(`#panel-${targetId}`);
+        if (!panel) return;
+
+        // Close Main Menu first (optional, but cleaner)
+        if (isMenuOpen) {
+            gsap.to(navOverlay, { y: "-100%", duration: 0.8, ease: "expo.inOut" });
+            if (menuBtn) menuBtn.querySelector('span').textContent = "MENU";
+            isMenuOpen = false;
+        }
+
+        // Hide other panels
+        panels.forEach(p => p.style.display = 'none');
+
+        // Show Target Panel
+        panel.style.display = 'flex';
+
+        // General Panel Entry
+        gsap.fromTo(panel,
+            { opacity: 0, scale: 0.95 },
+            { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }
+        );
+
+        // Specific Section Animations
+        if (targetId === 'who') {
+            // Figure Pop
+            gsap.fromTo(panel.querySelector('.figure-wrapper'),
+                { scale: 0, opacity: 0, y: 50 },
+                { scale: 1, opacity: 1, y: 0, duration: 0.8, ease: "elastic.out(1, 0.5)", delay: 0.2 }
+            );
+            // Text Stagger
+            gsap.fromTo(panel.querySelectorAll('.panel-text *'),
+                { y: 20, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power2.out", delay: 0.4 }
+            );
+        } else if (targetId === 'achievements') {
+            gsap.fromTo(panel.querySelector('.panel-body'),
+                { x: 50, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
+            );
+            gsap.fromTo(panel.querySelectorAll('li, p, h2'),
+                { x: 20, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power2.out", delay: 0.2 }
+            );
+        } else if (targetId === 'career') {
+            // Center Pop
+            gsap.fromTo(panel.querySelector('.figure-wrapper'),
+                { scale: 0, opacity: 0 },
+                { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.7)", delay: 0.2 }
+            );
+            gsap.fromTo(panel.querySelectorAll('.tech-stack-list p'),
+                { opacity: 0, y: 10 },
+                { opacity: 1, y: 0, stagger: 0.1, delay: 0.5 }
+            );
+        } else if (targetId === 'social') {
+            gsap.fromTo(panel.querySelectorAll('.social-card'),
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: "back.out(1.2)", delay: 0.2 }
+            );
+        }
+    }
+
+    function closeAllPanels() {
+        gsap.to(panels, {
+            opacity: 0,
+            scale: 0.95,
+            duration: 0.3,
+            onComplete: () => {
+                panels.forEach(p => p.style.display = 'none');
+            }
+        });
+    }
+
+    // --- Page Transitions (Legacy/Horizontal) ---
+    const transitionOverlay = document.querySelector('.transition-overlay');
+
     // Hero Entry Animation timeline
     const tl = gsap.timeline();
 
-    tl.to(".hero-title", {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 2.2, // Cinematic Slow-Motion
-        ease: "expo.out",
-        delay: 0.2
-    })
-        .to(".canvas-wrapper", {
-            opacity: 1,
-            scale: 1,
-            duration: 2.0,
-            ease: "expo.out"
-        }, "-=2.0")
-        .to(".stat-box, .cta-button, .scroll-indicator", {
-            opacity: 1,
-            y: 0,
-            duration: 1.5, // Slower reveal
-            stagger: 0.1,
-            ease: "power2.out"
-        }, "-=1.5");
+    if (document.querySelector(".hero-title")) {
+        /*
+                tl.to(".hero-title", {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 2.4, // Cinematic Slow-Motion
+                    ease: "expo.out",
+                    delay: 0.2
+                })
+        */
+    }
 
-    // Idle Floating Animation for UI
-    gsap.to(".stat-box.right", {
-        y: -10,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut"
-    });
+    if (document.querySelector(".stat-box, .cta-button, .scroll-indicator")) {
+        /*
+                tl.to(".stat-box, .cta-button, .scroll-indicator", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.5,
+                    stagger: 0.1,
+                    ease: "power2.out"
+                }, "-=1.5");
+        */
+    }
 
-    gsap.to(".stat-box:not(.right)", {
-        y: 10,
-        duration: 4,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: 1
-    });
-
-    // Parallax Effect - Stabilized
+    // Parallax Effect - Stabilized & Subtle
     gsap.to(".parallax-layer", {
-        yPercent: 15, // Subtle, ambient movement
-        rotation: 0, // No rotation on scroll
-        ease: "none",
-        scrollTrigger: {
-            trigger: "#hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: true // Instant response (no lag)
-        }
-    });
-
-    gsap.to(".hero-title", {
-        yPercent: 30,
-        opacity: 0,
-        // Removed heavy filters for performance
+        yPercent: 15, // Subtle
+        rotation: 0,
         ease: "none",
         scrollTrigger: {
             trigger: "#hero",
@@ -96,268 +322,424 @@ const setupAnimations = () => {
             scrub: true
         }
     });
+
+    gsap.to(".hero-title", {
+        yPercent: 30, // Gentle drift
+        opacity: 0,
+        scale: 1.1,
+        ease: "none",
+        scrollTrigger: {
+            trigger: "#hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: true
+        }
+    });
+
+    // Hero Scale Down & Lift (LandonNorris Style)
+    // The portrait should shrink and move UP as you scroll down
+    gsap.to(".canvas-wrapper", {
+        scale: 0.6,          // Significant shrink
+        yPercent: -20,       // Move UP (negative Y)
+        opacity: 0,          // Fade out eventually
+        ease: "power1.inOut",
+        scrollTrigger: {
+            trigger: "#hero",
+            start: "top top",
+            end: "bottom 30%", // Finish before section ends
+            scrub: true
+        }
+    });
+
+    // Name Reveal Logic (optional tweak if needed)
+    gsap.to(".hero-title", {
+        yPercent: -50,       // Move up faster
+        opacity: 0,
+        scale: 0.9,
+        ease: "none",
+        scrollTrigger: {
+            trigger: "#hero",
+            start: "top top",
+            end: "bottom center",
+            scrub: true
+        }
+    });
+
+    // --- Next Race Morph Logic (Map -> ? Icon) ---
+    const trackIcon = document.querySelector('.track-icon');
+    if (trackIcon) {
+        // Create the '?' element dynamically
+        const questionMark = document.createElement('div');
+        questionMark.textContent = "?";
+        questionMark.style.position = "absolute";
+        questionMark.style.top = "50%";
+        questionMark.style.left = "50%";
+        questionMark.style.transform = "translate(-50%, -50%)";
+        questionMark.style.fontSize = "2rem";
+        questionMark.style.fontWeight = "bold";
+        questionMark.style.color = "#000";
+        questionMark.style.opacity = "0"; // Initially hidden
+        trackIcon.appendChild(questionMark);
+
+        const svg = trackIcon.querySelector('svg');
+        if (svg) {
+            const morphTl = gsap.timeline({ repeat: -1, repeatDelay: 3, yoyo: true });
+            morphTl.to(svg, {
+                scale: 0,
+                opacity: 0,
+                duration: 0.6,
+                ease: "back.in(1.7)"
+            })
+                .to(questionMark, {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "back.out(1.7)"
+                }, "-=0.3");
+        }
+    }
+
+    // --- Journey Section Horizontal Scroll ---
+    const journeySection = document.querySelector("#journey");
+    const journeyContainer = document.querySelector(".journey-container");
+
+    if (journeySection && journeyContainer) {
+        // Calculate scroll amount: container width - viewport width
+        // We add some padding for safety
+        const totalScroll = journeyContainer.scrollWidth - window.innerWidth + window.innerWidth * 0.2;
+
+        gsap.to(journeyContainer, {
+            x: () => -totalScroll,
+            ease: "none",
+            scrollTrigger: {
+                trigger: journeySection,
+                pin: true,           // Pin the section
+                scrub: 1,            // Smooth scrub
+                start: "top top",
+                end: () => `+=${totalScroll}`, // Scroll distance matches horizontal width
+                invalidateOnRefresh: true,
+                anticipatePin: 1
+            }
+        });
+
+        // Parallax for cards
+        gsap.utils.toArray(".journey-card").forEach((card, i) => {
+            gsap.from(card.querySelector(".card-image"), {
+                scale: 1.1,
+                scrollTrigger: {
+                    trigger: card,
+                    containerAnimation: gsap.getTweensOf(journeyContainer)[0], // Link to horizontal scroll
+                    start: "left right",
+                    end: "right left",
+                    scrub: true
+                }
+            });
+        });
+    }
+
+
+
+
+    // --- Magnetic Hover for Menu Btn ---
+    if (menuBtn) {
+        menuBtn.addEventListener('mousemove', (e) => {
+            const rect = menuBtn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            gsap.to(menuBtn, {
+                x: x * 0.3,
+                y: y * 0.3,
+                duration: 0.5,
+                ease: "power2.out"
+            });
+        });
+
+        menuBtn.addEventListener('mouseleave', () => {
+            gsap.to(menuBtn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.5)" });
+        });
+    }
+
 };
 
-// --- Fluid Simulation Class ---
-class FluidSimulation {
+// --- FBO Fluid Simulation Class ---
+// --- Authentic FBO Liquid Morph (Standard) ---
+class LiquidMorph {
     constructor() {
-        this.size = 512; // Texture size
+        this.container = document.querySelector('.canvas-wrapper');
+        this.canvas = document.querySelector("#fluid-canvas");
+        if (!this.container || !this.canvas) return;
+
+        this.width = this.container.clientWidth;
+        this.height = this.container.clientHeight;
+        this.pixelRatio = Math.min(window.devicePixelRatio, 2);
+
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 10);
+        this.renderer = new THREE.WebGLRenderer({
+            canvas: this.canvas,
+            alpha: true,
+            antialias: false,
+            powerPreference: "high-performance"
+        });
+
+        this.mouse = new THREE.Vector2(0, 0);
+        this.prevMouse = new THREE.Vector2(0, 0);
         this.isMoving = false;
-        this.lastMoveTime = 0;
-        this.currentTarget = 0;
 
-        this.mouse = new THREE.Vector2(0.5, 0.5);
-        this.prevMouse = new THREE.Vector2(0.5, 0.5);
-
-        // Default aspect ratio 3:4 for vertical portrait
-        this.topTextureSize = new THREE.Vector2(300, 400);
-        this.bottomTextureSize = new THREE.Vector2(300, 400);
-
-        // Wait for DOM to be ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.init());
-        } else {
-            this.init();
-        }
+        this.init();
     }
 
     async init() {
+        this.renderer.setSize(this.width, this.height);
+        this.renderer.setPixelRatio(this.pixelRatio);
+
+        const loader = new THREE.TextureLoader();
         try {
-            this.canvas = document.querySelector("#fluid-canvas");
-            if (!this.canvas) throw new Error("Canvas element not found");
-
-            this.setupRenderer();
-            this.setupScene();
-            this.setupMaterials();
-            this.setupMeshes();
-            this.setupInputListeners();
-
-            // Load textures
-            await Promise.all([
-                this.loadImage("pot_top.png", this.topTexture, this.topTextureSize, "top"),
-                this.loadImage("pot_bottom.png", this.bottomTexture, this.bottomTextureSize, "bottom")
+            const [tex1, tex2] = await Promise.all([
+                this.loadTexture(loader, 'casual.png'),
+                this.loadTexture(loader, 'racing.png')
             ]);
+            this.tex1 = tex1;
+            this.tex2 = tex2;
 
-            this.onWindowResize();
-            this.animate();
+            // Aspect Ratio logic
+            this.imageAspect = tex1.image.width / tex1.image.height;
 
-            console.log("Fluid simulation initialized");
-
-            // Trigger animations after WebGL is ready
-            setupAnimations();
-
-        } catch (error) {
-            console.error("Initialization failed:", error);
-            // Show fallback image
-            const fallback = document.querySelector('.fallback-img');
-            if (fallback) fallback.style.opacity = 1;
+        } catch (e) {
+            console.error("Texture Load Fail", e);
+            return;
         }
+
+        this.setupFBO();
+        this.setupPipeline();
+        this.addEvents();
+        this.animate();
+
+        // Unhide canvas
+        this.canvas.style.display = 'block';
     }
 
-    setupRenderer() {
-        this.renderer = new THREE.WebGLRenderer({
-            canvas: this.canvas,
-            antialias: true,
-            alpha: true, // Important for blending with light background
-            precision: "highp"
-        });
+    loadTexture(loader, url) {
+        return new Promise(resolve => loader.load(url, resolve));
+    }
 
-        // Use device pixel ratio but cap it for performance
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        const targetSettings = {
+    setupFBO() {
+        // Ping-Pong for Fluid Trail Persistence
+        const size = 128; // Sim resolution (lower = more "liquid" feel)
+        const options = {
             minFilter: THREE.LinearFilter,
             magFilter: THREE.LinearFilter,
             format: THREE.RGBAFormat,
-            type: THREE.FloatType,
+            type: THREE.FloatType, // Requires OES_texture_float extension usually, but standard in WebGL2
+            depthBuffer: false,
+            stencilBuffer: false
         };
 
-        this.pingPongTargets = [
-            new THREE.WebGLRenderTarget(this.size, this.size, targetSettings),
-            new THREE.WebGLRenderTarget(this.size, this.size, targetSettings)
+        this.simTargets = [
+            new THREE.WebGLRenderTarget(size, size, options),
+            new THREE.WebGLRenderTarget(size, size, options)
         ];
-    }
+        this.currentSimIndex = 0;
 
-    setupScene() {
-        this.scene = new THREE.Scene();
-        this.simScene = new THREE.Scene();
-        this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    }
-
-    setupMaterials() {
-        this.topTexture = this.createPlaceholderTexture("#333");
-        this.bottomTexture = this.createPlaceholderTexture("#CCFF00");
-
-        this.trailsMaterial = new THREE.ShaderMaterial({
+        // Simulation Material (The Physics)
+        this.simMaterial = new THREE.ShaderMaterial({
             uniforms: {
-                uPrevTrails: { value: null },
-                uMouse: { value: this.mouse },
-                uPrevMouse: { value: this.prevMouse },
-                uResolution: { value: new THREE.Vector2(this.size, this.size) },
-                uDecay: { value: 0.98 }, // Longer trails
-                uIsMoving: { value: false }
+                uTexture: { value: null },
+                uMouse: { value: new THREE.Vector2(0, 0) },
+                uPrevMouse: { value: new THREE.Vector2(0, 0) },
+                uResolution: { value: new THREE.Vector4(size, size, 1, 1) },
+                uDt: { value: 0.016 },
+                uIsMoving: { value: 0.0 }
             },
-            vertexShader: vertexShader,
-            fragmentShader: FluidFragmentShader
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform sampler2D uTexture;
+                uniform vec2 uMouse;
+                uniform vec2 uPrevMouse;
+                uniform vec4 uResolution;
+                uniform float uIsMoving;
+                varying vec2 vUv;
+
+                float circle(vec2 uv, vec2 center, float radius) {
+                    return 1.0 - smoothstep(radius * 0.9, radius, length(uv - center));
+                }
+
+                void main() {
+                    vec2 uv = vUv;
+                    vec4 color = texture2D(uTexture, uv);
+
+                    // Fluid Decay
+                    color.r *= 0.98; // Dissipation
+                    color.g *= 0.97;
+                    color.b *= 0.96;
+
+                    // Mouse Interaction
+                    if (uIsMoving > 0.5) {
+                        float radius = 0.08;
+                        float brightness = 1.0;
+                        
+                        // Draw line between mouse points for continuity
+                        vec2 dir = uMouse - uPrevMouse;
+                        float len = length(dir);
+                        int steps = int(len * 50.0) + 1;
+                        
+                        for(int i=0; i < 5; i++) {
+                            if(i >= steps) break;
+                            float t = float(i) / float(steps);
+                            vec2 pos = mix(uPrevMouse, uMouse, t);
+                            float brush = circle(uv, pos, radius);
+                            color.r += brush * brightness;
+                        }
+                    }
+
+                    gl_FragColor = color;
+                }
+            `
         });
 
+        this.simScene = new THREE.Scene();
+        this.simMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.simMaterial);
+        this.simScene.add(this.simMesh);
+    }
+
+    setupPipeline() {
+        // Final Display Material (The Distortion)
         this.displayMaterial = new THREE.ShaderMaterial({
             uniforms: {
-                uFluid: { value: null },
-                uTopTexture: { value: this.topTexture },
-                uBottomTexture: { value: this.bottomTexture },
-                uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-                uDpr: { value: window.devicePixelRatio },
-                uTopTextureSize: { value: this.topTextureSize },
-                uBottomTextureSize: { value: this.bottomTextureSize }
+                uFluid: { value: null }, // From FBO
+                uTex1: { value: this.tex1 },
+                uTex2: { value: this.tex2 },
+                uResolution: { value: new THREE.Vector2(this.width, this.height) },
+                uImageAspect: { value: this.imageAspect }
             },
-            vertexShader: vertexShader,
-            fragmentShader: displayFragmentShader,
-            transparent: true // Enable transparency
-        });
-    }
-
-    setupMeshes() {
-        const geometry = new THREE.PlaneGeometry(2, 2);
-        this.simMesh = new THREE.Mesh(geometry, this.trailsMaterial);
-        this.simScene.add(this.simMesh);
-        this.displayMesh = new THREE.Mesh(geometry, this.displayMaterial);
-        this.scene.add(this.displayMesh);
-    }
-
-    setupInputListeners() {
-        // Track mouse relative to viewport, but map to canvas in update
-        window.addEventListener("mousemove", this.onMouseMove.bind(this));
-        window.addEventListener("touchmove", this.onTouchMove.bind(this), { passive: false });
-        window.addEventListener("resize", this.onWindowResize.bind(this));
-    }
-
-    createPlaceholderTexture(color) {
-        const canvas = document.createElement("canvas");
-        canvas.width = 64;
-        canvas.height = 64;
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = color;
-        ctx.fillRect(0, 0, 64, 64);
-        const texture = new THREE.CanvasTexture(canvas);
-        return texture;
-    }
-
-    loadImage(url, targetTexture, textureSizeVector, type) {
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.crossOrigin = "Anonymous";
-            img.onload = () => {
-                textureSizeVector.set(img.width, img.height);
-
-                const canvas = document.createElement("canvas");
-                // Resize if too big
-                const MAX_SIZE = 2048;
-                let w = img.width;
-                let h = img.height;
-                if (w > MAX_SIZE || h > MAX_SIZE) {
-                    const aspect = w / h;
-                    if (w > h) { w = MAX_SIZE; h = MAX_SIZE / aspect; }
-                    else { h = MAX_SIZE; w = MAX_SIZE * aspect; }
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
                 }
+            `,
+            fragmentShader: `
+                uniform sampler2D uFluid;
+                uniform sampler2D uTex1;
+                uniform sampler2D uTex2;
+                uniform vec2 uResolution;
+                uniform float uImageAspect;
+                varying vec2 vUv;
 
-                canvas.width = w;
-                canvas.height = h;
-                const ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0, w, h);
+                void main() {
+                    // Aspect Correction (cover mode)
+                    vec2 ratio = vec2(
+                        min((uResolution.x / uResolution.y) / uImageAspect, 1.0),
+                        min((uImageAspect / (uResolution.x / uResolution.y)), 1.0)
+                    );
+                    vec2 uv = vec2(
+                        vUv.x * ratio.x + (1.0 - ratio.x) * 0.5,
+                        vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
+                    );
 
-                const newTexture = new THREE.CanvasTexture(canvas);
-                newTexture.minFilter = THREE.LinearFilter;
-                newTexture.magFilter = THREE.LinearFilter;
+                    // Read Fluid
+                    vec4 fluid = texture2D(uFluid, vUv); // Use uncorrected UV for fluid typically, or corrected? 
+                    // Let's use vUv for fluid to map to screen space naturally
+                    
+                    float intensity = fluid.r; // Red channel holds the height/intensity
 
-                if (type === "top") {
-                    this.displayMaterial.uniforms.uTopTexture.value = newTexture;
-                } else {
-                    this.displayMaterial.uniforms.uBottomTexture.value = newTexture;
+                    // Distort UVs based on fluid
+                    vec2 distort = vec2(intensity * 0.02, intensity * 0.02);
+                    vec2 distortedUV = uv - distort;
+
+                    vec4 c1 = texture2D(uTex1, distortedUV);
+                    vec4 c2 = texture2D(uTex2, distortedUV);
+
+                    // Mix based on fluid intensity
+                    float mixVal = smoothstep(0.0, 0.5, intensity);
+                    
+                    gl_FragColor = mix(c1, c2, mixVal);
                 }
-                resolve();
-            };
-            img.onerror = () => {
-                console.warn(`Failed to load ${url}`);
-                resolve();
-            };
-            img.src = url;
+            `,
+            transparent: true
         });
+
+        this.quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.displayMaterial);
+        this.scene.add(this.quad);
     }
 
-    onMouseMove(event) {
-        // We need to map mouse position to the Canvas UV space (0 to 1) 
-        // considering the canvas is centered and might be smaller than viewport
-        const rect = this.canvas.getBoundingClientRect();
-
-        // Check if mouse is near/inside canvas
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-
-        // Simple hit test with generic mapping
-        if (mouseX >= rect.left && mouseX <= rect.right &&
-            mouseY >= rect.top && mouseY <= rect.bottom) {
-
-            this.prevMouse.copy(this.mouse);
-            this.mouse.x = (mouseX - rect.left) / rect.width;
-            this.mouse.y = 1 - (mouseY - rect.top) / rect.height;
+    addEvents() {
+        window.addEventListener('mousemove', (e) => {
             this.isMoving = true;
-            this.lastMoveTime = performance.now();
-        } else {
-            this.isMoving = false;
-        }
-    }
+            this.prevMouse.copy(this.mouse);
 
-    onTouchMove(event) {
-        if (event.touches.length > 0) {
-            const touch = event.touches[0];
             const rect = this.canvas.getBoundingClientRect();
-            if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
-                touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
-                this.prevMouse.copy(this.mouse);
-                this.mouse.x = (touch.clientX - rect.left) / rect.width;
-                this.mouse.y = 1 - (touch.clientY - rect.top) / rect.height;
-                this.isMoving = true;
-                this.lastMoveTime = performance.now();
-            }
-        }
-    }
+            // Map to 0-1 UV space
+            this.mouse.x = (e.clientX - rect.left) / rect.width;
+            this.mouse.y = 1.0 - (e.clientY - rect.top) / rect.height;
 
-    onWindowResize() {
-        // Because canvas is CSS-sized to specific aspect ratio or % of vh,
-        // we update renderer size to match clientHeight/Width for sharpness
-        const width = this.canvas.clientWidth;
-        const height = this.canvas.clientHeight;
+            clearTimeout(this.moveTimer);
+            this.moveTimer = setTimeout(() => this.isMoving = false, 100);
+        });
 
-        this.renderer.setSize(width, height, false); // false = don't update style
-        this.displayMaterial.uniforms.uResolution.value.set(width, height);
-        this.displayMaterial.uniforms.uDpr.value = window.devicePixelRatio;
+        window.addEventListener('resize', () => {
+            this.width = this.container.clientWidth;
+            this.height = this.container.clientHeight;
+            this.renderer.setSize(this.width, this.height);
+            this.displayMaterial.uniforms.uResolution.value.set(this.width, this.height);
+        });
     }
 
     animate() {
         requestAnimationFrame(this.animate.bind(this));
 
-        if (this.isMoving && performance.now() - this.lastMoveTime > 100) {
-            this.isMoving = false;
-        }
+        // 1. Physics Step
+        this.simMesh.visible = true;
+        this.quad.visible = false;
 
-        const prevTarget = this.pingPongTargets[this.currentTarget];
-        this.currentTarget = (this.currentTarget + 1) % 2;
-        const currentTarget = this.pingPongTargets[this.currentTarget];
+        const currentTarget = this.simTargets[this.currentSimIndex];
+        const nextTarget = this.simTargets[this.currentSimIndex === 0 ? 1 : 0];
 
-        this.trailsMaterial.uniforms.uPrevTrails.value = prevTarget.texture;
-        this.trailsMaterial.uniforms.uMouse.value.copy(this.mouse);
-        this.trailsMaterial.uniforms.uPrevMouse.value.copy(this.prevMouse);
-        this.trailsMaterial.uniforms.uIsMoving.value = this.isMoving;
+        this.simMaterial.uniforms.uTexture.value = currentTarget.texture;
+        this.simMaterial.uniforms.uPrevMouse.value = this.prevMouse;
+        this.simMaterial.uniforms.uMouse.value = this.mouse;
+        this.simMaterial.uniforms.uIsMoving.value = this.isMoving ? 1.0 : 0.0;
 
-        this.renderer.setRenderTarget(currentTarget);
+        this.renderer.setRenderTarget(nextTarget);
         this.renderer.render(this.simScene, this.camera);
 
-        this.displayMaterial.uniforms.uFluid.value = currentTarget.texture;
+        // Swap
+        this.currentSimIndex = this.currentSimIndex === 0 ? 1 : 0;
+
+        // 2. Display Step
         this.renderer.setRenderTarget(null);
+        this.simMesh.visible = false;
+        this.quad.visible = true;
+
+        this.displayMaterial.uniforms.uFluid.value = nextTarget.texture;
         this.renderer.render(this.scene, this.camera);
+
+        // Damping for next frame if no movement
+        if (!this.isMoving) {
+            // Optional: slowly decay mouse influence if needed, but shader handles decay
+        }
     }
 }
 
-// Start
-new FluidSimulation();
+
+// Init Safely
+document.addEventListener("DOMContentLoaded", () => {
+    // Run Preloader
+    runPreloader();
+
+    // Enable Interactions
+    setupAnimations();
+
+    // Enable Liquid Morph
+    try {
+        new LiquidMorph();
+    } catch (e) { console.warn("Morph Init Error", e); }
+});

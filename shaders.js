@@ -31,48 +31,107 @@ export const FluidFragmentShader = `
                 projAlong = clamp(projAlong, 0.0, lineLength);
                 vec2 closestPoint = uPrevMouse + projAlong * mouseDir;
                 float dist = length(vUv - closestPoint);
-                float lineWidth = 0.15; // Width of the fluid brush
+                float lineWidth = 0.08; // Thinner, sharper brush
                 
-                // More intense falloff for sharper trails
-                float intensity = smoothstep(lineWidth, 0.0, dist) * 0.8; 
+                // Quadratic falloff for smoother edges
+                float intensity = 1.0 - smoothstep(0.0, lineWidth, dist);
+                intensity = pow(intensity, 2.0);
                 
-                newValue += intensity;
+                newValue += intensity * 0.5; // Accumulate gently
             }
         }
         
-        // Clamp to prevent blowout
-        newValue = min(newValue, 1.0);
-        
+        newValue = clamp(newValue, 0.0, 1.0);
         gl_FragColor = vec4(newValue, 0.0, 0.0, 1.0);
     }
 `;
 
 export const displayFragmentShader = `
     uniform sampler2D uFluid;
-    uniform sampler2D uTopTexture;
-    uniform sampler2D uBottomTexture;
+    uniform sampler2D uTopTexture;    // Casual
+    uniform sampler2D uBottomTexture; // Suited/Racing
     uniform vec2 uResolution;
+    uniform float uImageAspect;
     varying vec2 vUv;
+
+    // Pseudo-random noise function
+    float hash(vec2 p) {
+        return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+    }
+
+    float noise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        return mix(mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), f.x),
+                   mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
+    }
+
+    float fbm(vec2 p) {
+        float v = 0.0;
+        v += 0.5 * noise(p); p *= 2.0;
+        v += 0.25 * noise(p); p *= 2.0;
+        v += 0.125 * noise(p); p *= 2.0;
+        return v;
+    }
     
     void main() {
+        // 1. Aspect Ratio Correction
+        float containerAspect = uResolution.x / uResolution.y;
+        float imageAspect = uImageAspect;
+        
+        vec2 scale = vec2(1.0);
+        if (containerAspect > imageAspect) {
+            scale.y = imageAspect / containerAspect;
+        } else {
+            scale.x = containerAspect / imageAspect;
+        }
+
+        vec2 correctedUv = (vUv - 0.5) * scale + 0.5;
+        
+        // 2. Liquid Distortion Logic
+        // Sample fluid trail (r channel)
         vec4 fluid = texture2D(uFluid, vUv);
-        vec4 topColor = texture2D(uTopTexture, vUv);
-        vec4 bottomColor = texture2D(uBottomTexture, vUv);
+        // Enhance the fluid value to make it punchier
+        float fluidIntensity = smoothstep(0.0, 0.5, fluid.r);
         
-        // Boost the reveal effect "200%"
-        // Using power function to make the edge sharper
-        float mixFactor = fluid.r;
-        mixFactor = smoothstep(0.0, 0.8, mixFactor); // Sharpen the transition
+        // Generate organic noise map
+        // Lower frequency (2.0) for larger, softer liquid blobs
+        float n = fbm(correctedUv * 2.0 + fluidIntensity * 1.5);
         
-        // Add a subtle "energy glow" at the edge of the reveal
-        float edge = smoothstep(0.4, 0.5, fluid.r) - smoothstep(0.5, 0.6, fluid.r);
-        vec3 glowColor = vec3(0.8, 1.0, 0.0); // Acid green glow
+        // COMBINED Distortion: Purely driven by fluid
+        // The distortion strength is high where the fluid is present
+        float distortionStrength = 0.06 * fluidIntensity; 
         
-        vec4 finalColor = mix(topColor, bottomColor, mixFactor);
+        vec2 flowVector = vec2(
+            sin(correctedUv.y * 8.0 + n * 4.0 + fluidIntensity * 4.0),
+            cos(correctedUv.x * 8.0 + n * 4.0 + fluidIntensity * 4.0)
+        );
         
-        // Add the glow on top
-        // finalColor.rgb += glowColor * edge * 0.5; 
+        vec2 finalUv = correctedUv + flowVector * distortionStrength;
+
+        // 3. Texture Sampling
+        vec4 casualColor = texture2D(uTopTexture, finalUv);
+        vec4 suitedColor = texture2D(uBottomTexture, finalUv);
         
-        gl_FragColor = finalColor;
+        // 4. Organic Reveal
+        // The reveal is DIRECTLY linked to the fluid intensity + noise
+        // No global hover param. If there is no fluid, there is no reveal.
+        
+        float revealFactor = fluidIntensity; 
+        
+        // Modulate reveal by noise for ink-bleed effect
+        // 0.2 base threshold, spreads with high intensity
+        float mixFactor = smoothstep(0.2, 0.6, revealFactor + n * 0.2);
+        
+        // 5. Bounds Check
+        float mask = 1.0;
+        if(finalUv.x < 0.0 || finalUv.x > 1.0 || finalUv.y < 0.0 || finalUv.y > 1.0) {
+            mask = 0.0;
+        }
+        
+        vec4 finalColor = mix(casualColor, suitedColor, mixFactor);
+        
+        gl_FragColor = vec4(finalColor.rgb, finalColor.a * mask);
     }
 `;

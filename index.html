@@ -13,9 +13,10 @@
         href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Righteous&family=Syncopate:wght@400;700&display=swap"
         rel="stylesheet">
 
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css" />
 
-    <!-- Import Map for Three.js -->
+    <!-- Import Map (For later re-enable) -->
     <script type="importmap">
         {
             "imports": {
@@ -26,6 +27,17 @@
 </head>
 
 <body>
+    <!-- SAFE MODE: Custom Cursor & Preloader Hidden initially -->
+    <div class="custom-cursor" style="display: none;"></div>
+    <div id="preloader">
+        <div class="loader-content">
+            <span class="loader-text">SYSTEM INITIALIZING</span>
+            <span class="loader-counter">00</span>
+        </div>
+        <div class="loader-bar-wrapper">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
 
     <!-- Navigation -->
     <nav>
@@ -40,6 +52,120 @@
             </div>
         </div>
     </nav>
+
+    <!-- Full Screen Menu Overlay -->
+    <div id="nav-overlay">
+        <ul class="nav-links">
+            <li class="nav-item"><a href="#" class="nav-link" data-target="who"><span>Who am I ?</span></a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-target="achievements"><span>Achievements</span></a>
+            </li>
+            <li class="nav-item"><a href="#" class="nav-link" data-target="career"><span>Career</span></a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-target="social"><span>Social</span></a></li>
+            <li class="nav-item"><a href="#" class="nav-link" data-target="others"><span>Others</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Menu Content Panels (Hidden by Default) -->
+    <div id="panel-container">
+
+        <!-- 1. Who Am I -->
+        <div id="panel-who" class="content-panel">
+            <div class="panel-close">CLOSE</div>
+            <div class="panel-body centered">
+                <div class="figure-wrapper">
+                    <img src="casual.png" alt="Shafeeq" class="panel-figure">
+                </div>
+                <div class="panel-text">
+                    <h2>Yo 👋 I’m Shafeeq Aadhil</h2>
+                    <p class="accent-text">Born on 19/11/2007 — certified 2000s kid 😎</p>
+                    <p class="accent-text">From Villupuram, Tamil Nadu 🌍</p>
+                    <p>I’m basically that guy who’s always online, always experimenting, and always tryna make the web
+                        look cooler than yesterday.</p>
+                    <p>I’m into tech, animations, clean UI, smooth motion, and building stuff that actually feels alive
+                        — not boring textbook websites.</p>
+                    <p>Still learning. Still grinding.<br>This? Just the intro arc 🚀</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Achievements -->
+        <div id="panel-achievements" class="content-panel">
+            <div class="panel-close">CLOSE</div>
+            <div class="panel-body">
+                <h2>No crazy flex yet 😤</h2>
+                <p class="subtitle">Still an intermediate college student, but locked in.</p>
+                <ul class="achievement-list">
+                    <li>• Learning full-stack dev step by step</li>
+                    <li>• Messing with animations, UI/UX & logic</li>
+                    <li>• Building projects instead of just watching tutorials</li>
+                    <li>• Slowly leveling up every single day</li>
+                </ul>
+                <p class="highlight">No trophies on the shelf yet — but momentum? Heavy.</p>
+            </div>
+        </div>
+
+        <!-- 3. Career -->
+        <div id="panel-career" class="content-panel">
+            <div class="panel-close">CLOSE</div>
+            <div class="panel-body centered">
+                <!-- Tech Marquee Background -->
+                <div class="tech-marquee">
+                    <div class="track">
+                        <span>PYTHON</span><span>JAVA</span><span>JAVASCRIPT</span><span>HTML</span><span>CSS</span>
+                        <span>PYTHON</span><span>JAVA</span><span>JAVASCRIPT</span><span>HTML</span><span>CSS</span>
+                        <span>PYTHON</span><span>JAVA</span><span>JAVASCRIPT</span><span>HTML</span><span>CSS</span>
+                    </div>
+                </div>
+
+                <div class="figure-wrapper mb-2">
+                    <img src="casual.png" alt="Shafeeq" class="panel-figure floating">
+                </div>
+
+                <div class="panel-text">
+                    <h2>I code. I break stuff. I fix it. Repeat 🔁</h2>
+
+                    <div class="tech-stack-list">
+                        <p>🐍 <b>Python</b> — logic brain</p>
+                        <p>☕ <b>Java</b> — structure & discipline</p>
+                        <p>⚡ <b>JavaScript</b> — making things move</p>
+                        <p>🎨 <b>HTML & CSS</b> — visuals & drip</p>
+                    </div>
+
+                    <p class="highlight">Still learning. Still dangerous.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Social -->
+        <div id="panel-social" class="content-panel">
+            <div class="panel-close">CLOSE</div>
+            <div class="panel-body centered">
+                <div class="social-grid">
+                    <a href="https://instagram.com/btw.shafeeq" target="_blank" class="social-card">
+                        <span class="label">Instagram</span>
+                        <span class="handle">@btw.shafeeq</span>
+                    </a>
+                    <a href="https://github.com/shafeeq27edu-ai" target="_blank" class="social-card">
+                        <span class="label">GitHub</span>
+                        <span class="handle">shafeeq27edu-ai</span>
+                    </a>
+                    <a href="#" target="_blank" class="social-card">
+                        <span class="label">LinkedIn</span>
+                        <span class="handle">Shafeeq Aadhil</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Others (Placeholder) -->
+        <div id="panel-others" class="content-panel">
+            <div class="panel-close">CLOSE</div>
+            <div class="panel-body centered">
+                <h2>More coming soon...</h2>
+            </div>
+        </div>
+
+    </div>
 
     <main>
         <!-- Horizontal Scroll Progress -->
@@ -61,21 +187,17 @@
 
                     <!-- 3D Canvas / Reveal Layer -->
                     <div class="canvas-wrapper">
-                        <canvas id="fluid-canvas"></canvas>
-                        <!-- Fallback image if JS fails or loading -->
-                        <img src="pot_top.png" class="fallback-img" alt="Driver Portrait">
+                        <!-- Canvas DISABLED for Stability -->
+                        <canvas id="fluid-canvas" style="display: none;"></canvas>
+
+                        <!-- Fallback image reset to CASUAL (Visible) -->
+                        <img src="casual.png" class="fallback-img" alt="Driver Portrait">
                     </div>
 
                     <div class="hero-footer-ui">
                         <div class="stat-box">
                             <span class="label">NEXT RACE</span>
                             <span class="value">MELBOURNE GP</span>
-                            <div class="track-icon">
-                                <svg width="40" height="20" viewBox="0 0 100 50">
-                                    <path d="M10,25 Q30,5 50,25 T90,25" fill="none" stroke="currentColor"
-                                        stroke-width="2" />
-                                </svg>
-                            </div>
                         </div>
 
                         <div class="scroll-indicator">
@@ -93,19 +215,102 @@
             </div>
         </section>
 
-        <!-- Dummy Content for Scroll Testing -->
-        <section class="content-section"
-            style="height: 100vh; background: #fff; display: flex; align-items: center; justify-content: center;">
-            <h2 style="font-family: 'Syncopate'; font-size: 4vw; color: #ccc;">CAREER STATS // 2025</h2>
+        <!-- Journey Section (Horizontal Scroll) -->
+        <section id="journey">
+            <div class="journey-wrapper">
+                <div class="journey-header">
+                    <h2>THE JOURNEY</h2>
+                    <span class="subtitle">FROM KARTING TO F1</span>
+                </div>
+                <div class="journey-container">
+                    <!-- Card 1 -->
+                    <div class="journey-card">
+                        <div class="card-number">01</div>
+                        <div class="card-image">
+                            <!-- Placeholder, can be replaced with verified assets later -->
+                            <div class="img-placeholder" style="background: #222;"></div>
+                        </div>
+                        <div class="card-content">
+                            <h3>KARTING ORIGINS</h3>
+                            <p>Dominated the European circuit, becoming the youngest ever World Karting Champion.</p>
+                            <span class="year">2014</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="journey-card">
+                        <div class="card-number">02</div>
+                        <div class="card-image">
+                            <div class="img-placeholder" style="background: #333;"></div>
+                        </div>
+                        <div class="card-content">
+                            <h3>F3 CHAMPION</h3>
+                            <p>Secured the European F3 title with a record-breaking rookie season performance.</p>
+                            <span class="year">2017</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="journey-card">
+                        <div class="card-number">03</div>
+                        <div class="card-image">
+                            <div class="img-placeholder" style="background: #444;"></div>
+                        </div>
+                        <div class="card-content">
+                            <h3>F1 DEBUT</h3>
+                            <p>Joined McLaren as the youngest British driver in history, making an immediate impact.</p>
+                            <span class="year">2019</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="journey-card">
+                        <div class="card-number">04</div>
+                        <div class="card-image">
+                            <div class="img-placeholder" style="background: #555;"></div>
+                        </div>
+                        <div class="card-content">
+                            <h3>MAIDEN WIN</h3>
+                            <p>Defining victory at the Miami Grand Prix, proving championship potential.</p>
+                            <span class="year">2024</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-left">
+                    <span>© 2026 SHAFEEQ</span>
+                    <span>LN4 DRIVER PROFILE</span>
+                </div>
+                <div class="footer-right">
+                    <a href="#">INSTAGRAM</a>
+                    <a href="#">TWITTER</a>
+                    <a href="#">PARTNERS</a>
+                </div>
+            </div>
+        </footer>
     </main>
+
+    <!-- SVG Filters for Liquid Effect -->
+    <svg style="display: none;">
+        <defs>
+            <filter id="liquid-distortion">
+                <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="1" result="warp" />
+                <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="0" in="SourceGraphic" in2="warp" />
+            </filter>
+        </defs>
+    </svg>
 
     <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
-    <!-- Main Script -->
+    <!-- Main Script (Active but Safe Mode) -->
     <script type="module" src="script.js"></script>
 </body>
 
