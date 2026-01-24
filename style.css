@@ -656,8 +656,10 @@ body.menu-open .nav-link {
 }
 
 .hero-figure {
-    /* STATIC RATIO FIT */
-    height: 90vh !important;
+    /* STATIC RATIO FIT - SAFE */
+    height: auto !important;
+    max-height: 90vh !important;
+    /* Cap height, don't force it */
     width: auto !important;
     max-width: 95vw;
 
@@ -674,15 +676,6 @@ body.menu-open .nav-link {
 
     will-change: transform, filter;
     transition: filter 0.3s ease;
-}
-
-/* Clean - No hard shadows, soft glow behind wrapper */
-filter: none;
-
-will-change: transform,
-filter;
-/* Optimized for new effects */
-transition: filter 0.3s ease;
 }
 
 /* Enhanced Portrait Interaction */
