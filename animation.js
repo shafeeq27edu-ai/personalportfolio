@@ -32,8 +32,8 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
         /* --- PHASE TWO: SECONDARY REVEALS --- */
         .reveal-on-scroll {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1.0s ease-out, transform 1.0s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(14px); /* LN Spec: 14px */
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
             will-change: opacity, transform;
         }
         
