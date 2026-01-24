@@ -627,11 +627,10 @@ body.menu-open .nav-link {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    /* Align bottom */
+    /* Align bottom FLUSH */
 
-    /* SAFETY BUFFER for Parallax Movement */
-    padding-bottom: 60px;
-    box-sizing: border-box;
+    /* STATIC MODE: No padding needed */
+    padding-bottom: 0;
 
     z-index: 5;
     pointer-events: none;
@@ -657,13 +656,10 @@ body.menu-open .nav-link {
 }
 
 .hero-figure {
-    /* RATIO SAFE SIZING + BUFFER */
-    height: 85vh !important;
-    /* Reduced slightly to prevent top clipping */
+    /* STATIC RATIO FIT */
+    height: 90vh !important;
     width: auto !important;
-    /* Preserve Natural Aspect Ratio */
-    max-width: 90vw;
-    /* Horizontal Safety */
+    max-width: 95vw;
 
     object-fit: contain;
     object-position: bottom center;

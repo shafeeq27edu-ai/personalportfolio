@@ -98,45 +98,13 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
     // ... (Phase 4 Secondary Animations) ...
 
 
-    // 5. HERO INTERACTION (Subtle Parallax - LN Style)
+    // 5. HERO INTERACTION (DISABLED - STATIC MODE REQUESTED)
+    /*
     const heroWrapperNode = document.querySelector('.hero-figure-wrapper');
     if (heroWrapperNode && window.innerWidth > 768) {
-        // LN Spec: Subtle, damped movement
-        const motionConfig = {
-            xRange: 20, // Increased slightly for visibility
-            yRange: 20,
-            lerp: 0.05 // "Very very smooth" (High damping)
-        };
-
-        let mouseX = 0, mouseY = 0;
-        let currentX = 0, currentY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            // Normalized -1 to 1
-            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-            mouseY = (e.clientY / window.innerHeight) * 2 - 1;
-        });
-
-        gsap.ticker.add(() => {
-            const targetX = mouseX * motionConfig.xRange;
-            const targetY = mouseY * motionConfig.yRange;
-
-            // Smooth Lerp
-            currentX += (targetX - currentX) * motionConfig.lerp;
-            currentY += (targetY - currentY) * motionConfig.lerp;
-
-            // Apply transform (Use set to avoid conflict with entry, but entry finishes eventually)
-            // Note: If entry is scaling, we shouldn't overwrite scale. 
-            // Better to use a child for parallax or ensuring scale 1 is assumed.
-            // Since entry ends at scale 1, we can just animate x/y.
-            gsap.set(heroWrapperNode, { x: currentX, y: currentY });
-        });
-
-        document.addEventListener('mouseleave', () => {
-            mouseX = 0;
-            mouseY = 0;
-        });
+        // ... (Parallax Code) ...
     }
+    */
 
 
     // 6. SECOND PRESENCE (Calm Scale Settle - "Option B")
