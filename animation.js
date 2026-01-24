@@ -103,9 +103,9 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
     if (heroWrapperNode && window.innerWidth > 768) {
         // LN Spec: Subtle, damped movement
         const motionConfig = {
-            xRange: 10,
-            yRange: 14,
-            lerp: 0.08 // Slightly heavier inertia
+            xRange: 20, // Increased slightly for visibility
+            yRange: 20,
+            lerp: 0.05 // "Very very smooth" (High damping)
         };
 
         let mouseX = 0, mouseY = 0;
