@@ -136,6 +136,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ... (Scroll Pause) ...
 
+    // --- 7. FOCUSED HERO OVERLAY ANIMATION (Distinct Pinned Step) ---
+    if (document.querySelector(".hero-overlay-card")) {
+        // We pin the entire hero section.
+        // The user scrolls -> Animation plays -> HOLD -> Unpin & Scroll Down.
+        const heroTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#career-hero",
+                start: "top top",
+                end: "+=2000", // Extended duration for "Step" feel
+                pin: true,
+                scrub: 1.2,    // Heavier weight for premium feel
+                anticipatePin: 1
+            }
+        });
+
+        // Combined Action: Organic Shrink + Blob Morph
+        heroTl
+            .to(".hero-overlay-card", {
+                scaleX: 0.85,
+                scaleY: 0.85,
+                borderRadius: "30% 30% 40% 40% / 40% 40% 30% 30%", // Organic liquid shape
+                boxShadow: "0 40px 100px rgba(0,0,0,0.8)",
+                ease: "power2.inOut",
+                duration: 5 // Relative duration (occupies ~80% of timeline)
+            })
+            // Quote Reveal
+            .to(".hero-quote", {
+                opacity: 1,
+                y: 0,
+                color: "#EAEAEA",
+                duration: 4, // Relative duration
+                ease: "power2.out"
+            }, "<1.0") // Overlap start
+
+            // "Hold" phase (Empty tween to ensure animation sits before unpinning)
+            .to({}, { duration: 1 });
+
+    }
+
     // --- 6. EXISTING SKILLS GRID ---
     gsap.from(".skill-card", {
         scrollTrigger: {
