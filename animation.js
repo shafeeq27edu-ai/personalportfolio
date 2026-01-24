@@ -81,7 +81,8 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
     });
 
 
-    // 3. PHASE ONE: HERO SHRINK (Camera Pull-Back)
+    // 3. PHASE ONE: HERO SHRINK (DISABLED FOR VISUAL ROLLBACK)
+    /*
     const heroWrapper = document.querySelector('.hero-container');
     if (heroWrapper && typeof ScrollTrigger !== 'undefined') {
         const scrollTl = gsap.timeline({
@@ -99,6 +100,7 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
             ease: "none"
         });
     }
+    */
 
 
     // 4. PHASE TWO: SECONDARY ANIMATIONS (Calm Rhythm)
