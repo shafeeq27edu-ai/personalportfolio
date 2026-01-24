@@ -613,20 +613,30 @@ body.menu-open .nav-link {
 }
 
 /* --- Layer 3: Hero Portrait (Focus) --- */
+/* --- Layer 3: Hero Portrait (Focus) --- */
 .hero-figure-wrapper {
-    position: relative;
-    /* Proportional Sizing - Oversized & Dominant */
-    width: auto;
-    height: 90vh;
-    /* Maximize height as requested */
-    /* aspect-ratio: 3 / 4; removed to allow natural shape */
-    aspect-ratio: auto;
-    max-width: 90vw;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 100vw;
+    height: 100vh;
+    /* Full Vertical Dominance */
+
+    max-width: none !important;
+    max-height: none !important;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
     z-index: 5;
-    /* FOREGROUND */
-    perspective: 1000px;
-    margin-bottom: -5vh;
-    /* Anchored */
+    margin-bottom: 0;
+
+    /* Prepare for GSAP Entry */
+    opacity: 0;
+    will-change: transform, opacity;
 }
 
 /* Glow Effect */
