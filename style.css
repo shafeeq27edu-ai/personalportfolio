@@ -561,7 +561,8 @@ body.menu-open .nav-link {
     width: 120%;
     height: 120%;
     z-index: 0;
-    opacity: 0.05;
+    opacity: 0.15;
+    /* Increased opacity for visible contours */
     pointer-events: none;
 }
 
@@ -598,9 +599,55 @@ body.menu-open .nav-link {
 
     /* Cinematic Blur */
     filter: blur(2px);
-    opacity: 1;
-    transform: scale(1.1);
-    /* Slightly cropped by default */
+}
+
+
+/* HERO FIGURE & LIQUID CANVAS */
+.hero-figure-wrapper {
+    position: absolute;
+    /* Screen Filling "Cover" Mode */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 105vh;
+    /* Slight overshoot at top */
+    max-width: none !important;
+    max-height: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    /* Anchor to bottom */
+    z-index: 5;
+    transition: transform 0.1s ease-out;
+    margin-bottom: 0;
+}
+
+#hero-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* Fallback Image */
+.hero-figure {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Fill the screen area completely */
+    object-position: bottom center;
+    /* Keep feet/body anchored */
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+opacity: 1;
+transform: scale(1.1);
+/* Slightly cropped by default */
 }
 
 .hero-title .outline {
