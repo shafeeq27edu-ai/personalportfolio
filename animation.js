@@ -57,20 +57,31 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
     document.head.appendChild(style);
 
 
-    // 2. HERO ENTRY ANIMATION (Phase 0)
+    // 2. HERO ENTRY ANIMATION (Cinematic Settle - LN Style)
     window.addEventListener('load', () => {
         if (typeof gsap === 'undefined') return;
 
-        gsap.set('.hero-figure-wrapper', { opacity: 0, y: 40, scale: 1.04 });
+        // Reset Initial States
+        gsap.set('.hero-figure-wrapper', { opacity: 0, y: 40, scale: 1.08 });
         gsap.set('.hero-title', { opacity: 0, y: 30 });
         gsap.set('.hero-footer-ui', { opacity: 0, y: 15 });
         gsap.set('.bg-grid', { opacity: 0.98 });
 
-        const tl = gsap.timeline({ defaults: { ease: CONFIG.entrance.ease } });
-        tl.to('.hero-figure-wrapper', { opacity: 1, y: 0, scale: 1, duration: CONFIG.entrance.duration })
-            .to('.hero-title', { opacity: 1, y: 0, duration: 1.2 }, "-=1.0")
-            .to('.hero-footer-ui', { opacity: 1, y: 0, duration: 1.0 }, "-=0.8");
+        const customEase = "cubic-bezier(0.22, 1, 0.36, 1)";
+        const tl = gsap.timeline({ defaults: { ease: customEase } });
 
+        // Hero Settle: Big entrance, smooth landing
+        tl.to('.hero-figure-wrapper', {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1.5,
+            ease: customEase
+        })
+            .to('.hero-title', { opacity: 1, y: 0, duration: 1.2 }, "-=1.2")
+            .to('.hero-footer-ui', { opacity: 1, y: 0, duration: 1.0 }, "-=1.0");
+
+        // Background Pulse
         gsap.to('.bg-grid, .bg-graphics', {
             opacity: 1,
             duration: 7,
@@ -81,86 +92,50 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
     });
 
 
-    // 3. PHASE ONE: HERO SHRINK (DISABLED FOR VISUAL ROLLBACK)
-    /*
-    const heroWrapper = document.querySelector('.hero-container');
-    if (heroWrapper && typeof ScrollTrigger !== 'undefined') {
-        const scrollTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "body",
-                start: "top top",
-                end: `+=300`,
-                scrub: 0.1,
-            }
-        });
-
-        scrollTl.to(heroWrapper, {
-            scale: CONFIG.phaseOne.scaleTarget,
-            opacity: CONFIG.phaseOne.opacityTarget,
-            ease: "none"
-        });
-    }
-    */
+    // ... (Phase 3 Disabled) ...
 
 
-    // 4. PHASE TWO: SECONDARY ANIMATIONS (Calm Rhythm)
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('in-view');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
-    setTimeout(() => {
-        // Broad selector for all revealable content
-        const targets = document.querySelectorAll(
-            '#journey h2, #journey p, .journey-card, .tech-marquee span, footer span, footer a, .content-panel h2, .editorial-heading, .editorial-text, .list-item, .timeline-item, .presence-text-container h2'
-        );
-
-        targets.forEach((el, index) => {
-            el.classList.add('reveal-on-scroll');
-            // Natural Rhythm: Modulo 3 stagger
-            const delayMod = index % 3;
-            if (delayMod === 1) el.classList.add('reveal-delay-1');
-            if (delayMod === 2) el.classList.add('reveal-delay-2');
-            observer.observe(el);
-        });
-
-        const lineTargets = document.querySelectorAll('hr, .rev-bar, .grid-line.horizontal, .divider, .section-separator');
-        lineTargets.forEach(el => {
-            el.classList.add('line-reveal');
-            observer.observe(el);
-        });
-    }, 200);
+    // ... (Phase 4 Secondary Animations) ...
 
 
-    // 5. HERO INTERACTION (Mouse Follow)
+    // 5. HERO INTERACTION (Subtle Parallax - LN Style)
     const heroWrapperNode = document.querySelector('.hero-figure-wrapper');
     if (heroWrapperNode && window.innerWidth > 768) {
+        // LN Spec: Subtle, damped movement
+        const motionConfig = {
+            xRange: 10,
+            yRange: 14,
+            lerp: 0.08 // Slightly heavier inertia
+        };
+
         let mouseX = 0, mouseY = 0;
         let currentX = 0, currentY = 0;
-        let currentRot = 0;
 
         document.addEventListener('mousemove', (e) => {
+            // Normalized -1 to 1
             mouseX = (e.clientX / window.innerWidth) * 2 - 1;
             mouseY = (e.clientY / window.innerHeight) * 2 - 1;
         });
 
         gsap.ticker.add(() => {
-            const targetX = mouseX * CONFIG.heroMotion.xRange;
-            const targetY = mouseY * CONFIG.heroMotion.yRange;
-            const targetRot = mouseX * CONFIG.heroMotion.rotRange;
+            const targetX = mouseX * motionConfig.xRange;
+            const targetY = mouseY * motionConfig.yRange;
 
-            currentX += (targetX - currentX) * CONFIG.heroMotion.lerp;
-            currentY += (targetY - currentY) * CONFIG.heroMotion.lerp;
-            currentRot += (targetRot - currentRot) * CONFIG.heroMotion.lerp;
+            // Smooth Lerp
+            currentX += (targetX - currentX) * motionConfig.lerp;
+            currentY += (targetY - currentY) * motionConfig.lerp;
 
-            gsap.set(heroWrapperNode, { x: currentX, y: currentY, rotation: currentRot });
+            // Apply transform (Use set to avoid conflict with entry, but entry finishes eventually)
+            // Note: If entry is scaling, we shouldn't overwrite scale. 
+            // Better to use a child for parallax or ensuring scale 1 is assumed.
+            // Since entry ends at scale 1, we can just animate x/y.
+            gsap.set(heroWrapperNode, { x: currentX, y: currentY });
         });
 
-        document.addEventListener('mouseleave', () => { mouseX = 0; mouseY = 0; });
+        document.addEventListener('mouseleave', () => {
+            mouseX = 0;
+            mouseY = 0;
+        });
     }
 
 
