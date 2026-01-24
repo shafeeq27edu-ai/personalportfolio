@@ -228,27 +228,37 @@
         <div class="grid-line horizontal"></div>
     </div>
 
+    <!-- 1. FIXED MATRIX BACKGROUND (Layer 0) -->
+    <canvas id="matrix-canvas"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; pointer-events: none; opacity: 0.8;"></canvas>
+
+    <!-- 2. MAIN CONTENT (Natural Flow) -->
     <main id="career-page">
 
-        <!-- 1. CAREER HERO (Matrix Style) -->
         <section id="career-hero">
-            <!-- Background Matrix Effect (Canvas) -->
-            <canvas id="matrix-canvas"></canvas>
-
-            <div class="career-hero-content">
-                <!-- Left: Cowboy Figure -->
-                <div class="hero-left">
-                    <div class="figure-wrapper">
-                        <img src="cowboy_hologram.png" alt="Shafeeq Portrait" class="career-figure hologram-effect">
+            <!-- HERO OVERLAY CARD (Focused) -->
+            <div class="hero-overlay-card">
+                <div class="career-hero-content">
+                    <!-- Left: Cowboy Figure -->
+                    <div class="hero-left">
+                        <div class="figure-wrapper"
+                            style="border-radius: 0 !important; clip-path: none !important; mask: none !important; -webkit-mask: none !important;">
+                            <img src="cowboy_hologram.png" alt="Shafeeq Portrait" class="career-figure hologram-effect"
+                                style="border-radius: 0 !important;">
+                        </div>
                     </div>
-                </div>
 
-                <!-- Center/Right: Text Block -->
-                <div class="hero-center">
-                    <h1 class="career-title reveal-text">NO GRIND.<br>PURE LOGIC.</h1>
-                    <div class="career-intro">
-                        <p class="highlight-border reveal-text">HARD WORK IS A BUG.<br>SMART WORK IS THE PATCH.</p>
-                        <p class="status-badge reveal-text">SYSTEM: OPTIMIZED</p>
+                    <!-- Center/Right: Text Block -->
+                    <div class="hero-center">
+                        <h1 class="career-title reveal-text">NO GRIND.<br>PURE LOGIC.</h1>
+                        <div class="career-intro">
+                            <p class="highlight-border reveal-text" style="font-size: 1.2rem; line-height: 1.6;">HARD
+                                WORK
+                                IS A BUG.<br>SMART WORK IS THE PATCH.</p>
+                            <p class="status-badge reveal-text" style="font-size: 1rem; margin-top: 1rem;">SYSTEM:
+                                OPTIMIZED
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -272,36 +282,106 @@
             </div>
         </section>
 
-        <!-- 4. CAREER TIMELINE (Clean Editorial) -->
-        <section id="career-timeline">
-            <div class="timeline-editorial">
-                <!-- Item 3 -->
-                <div class="t-item">
-                    <span class="t-year">PRESENT</span>
-                    <div class="t-content">
-                        <div class="t-role">B.Tech CSE (AI & ML)</div>
-                        <div class="t-org">Yenepoya University</div>
-                    </div>
-                </div>
-                <!-- Item 2 -->
-                <div class="t-item">
-                    <span class="t-year">2021-2023</span>
-                    <div class="t-content">
-                        <div class="t-role">High School (11th-12th)</div>
-                        <div class="t-org">Velammal Bodhi Campus, Puducherry</div>
-                    </div>
-                </div>
-                <!-- Item 1 -->
-                <div class="t-item">
-                    <span class="t-year">2009-2021</span>
-                    <div class="t-content">
-                        <div class="t-role">Schooling (LKG-10th)</div>
-                        <div class="t-org">Naahar Public School</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- ... (Rest of sections remain as siblings) ... -->
 
+        <style>
+            /* --- FOCUSED HERO OVERLAY CARD --- */
+            .hero-overlay-card {
+                background: linear-gradient(145deg, #1a1a1a, #222);
+                /* Dark Charcoal Premium */
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+
+                width: 90%;
+                max-width: 1300px;
+                margin: 5vh auto;
+                /* Center it */
+                padding: 3rem;
+
+                /* Clean Rectangle */
+                border-radius: 4px;
+
+                position: relative;
+                z-index: 10;
+
+                /* Transform for Scroll Animation */
+                will-change: transform;
+            }
+
+            /* --- LAYOUT FIXES --- */
+            /* Ensure content below flows naturally */
+            #career-page {
+                position: relative;
+                z-index: 5;
+                padding-bottom: 20vh;
+            }
+
+            /* Hero Section is just a container now */
+            #career-hero {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Portrait Shape */
+            .figure-wrapper,
+            .career-figure {
+                border-radius: 0 !important;
+                mask: none !important;
+                -webkit-mask: none !important;
+            }
+
+            /* --- HERO LAYOUT FIX --- */
+            .career-hero-content {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 5vw;
+                /* padding handled by card */
+            }
+
+            .hero-left {
+                flex: 1;
+                display: flex;
+                justify-content: flex-end;
+                max-width: 45%;
+            }
+
+            .hero-center {
+                flex: 1;
+                text-align: left;
+                z-index: 2;
+            }
+
+            /* Revert Text Colors to Light (Default) */
+            /* No need for overrides since background is dark again */
+
+            @media (max-width: 768px) {
+                .hero-overlay-card {
+                    padding: 2rem 1rem;
+                    width: 95%;
+                    margin-top: 10vh;
+                }
+
+                .career-hero-content {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                .hero-left {
+                    order: 2;
+                    max-width: 100%;
+                    justify-content: center;
+                }
+
+                .hero-center {
+                    order: 1;
+                    text-align: center;
+                    margin-bottom: 2rem;
+                }
+            }
+        </style>
 
         <!-- 2. TIMELINE MARQUEE (Continuous "SHAFEEQ" Loop) -->
         <!-- REMOVED MARQUEE SECTION -->

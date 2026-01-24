@@ -247,7 +247,9 @@
 
                         <!-- Hero Image (3D Tilt Ready) -->
                         <div class="hero-figure-wrapper">
-                            <img src="casual.png" class="hero-figure" alt="Driver Portrait">
+                            <canvas id="hero-canvas"></canvas>
+                            <img src="casual.png" class="hero-figure" alt="Driver Portrait"
+                                style="opacity: 0; pointer-events: none;">
                         </div>
 
                         <div class="hero-footer-ui">
@@ -488,6 +490,7 @@
     <script type="module" src="script.js"></script>
     <script src="menu-fix.js"></script>
     <script src="animation.js"></script>
+    <script type="module" src="liquid-effect.js"></script>
 </body>
 
 </html>

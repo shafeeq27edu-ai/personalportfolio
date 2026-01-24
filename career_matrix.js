@@ -68,8 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (figureWrapper && portrait) {
         // Parallax Movement
         document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 16; // +/- 8px
-            const y = (e.clientY / window.innerHeight - 0.5) * 20; // +/- 10px
+            const x = (e.clientX / window.innerWidth - 0.5) * 8; // +/- 8px (FIXED)
+            const y = (e.clientY / window.innerHeight - 0.5) * 10; // +/- 10px (FIXED)
 
             gsap.to(portrait, {
                 x: x,
@@ -80,14 +80,14 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        // Hover Glitch (Controlled)
+        // Hover Glitch (Controlled - NO LOOP)
         figureWrapper.addEventListener('mouseenter', () => {
             // Pulse Once
             gsap.to(portrait, {
                 filter: "invert(1) hue-rotate(180deg)",
                 duration: 0.1,
                 yoyo: true,
-                repeat: 3,
+                repeat: 1, // FIXED: Single pulse
                 onComplete: () => {
                     gsap.set(portrait, { filter: "none" });
                 }
@@ -140,6 +140,52 @@ document.addEventListener("DOMContentLoaded", () => {
         once: true
     });
     gsap.set(".t-item", { y: 10 });
+
+    // --- 7. FOCUSED HERO OVERLAY ANIMATION ---
+    // The Hero Card shrinks and drifts slightly to make way for content
+    if (document.querySelector(".hero-overlay-card")) {
+        gsap.to(".hero-overlay-card", {
+            scale: 0.88, // Subtle shrink
+            y: -50,      // Gentle upward drift
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "20% top", // Finish early so it feels like a handoff
+                scrub: true
+            },
+            ease: "none"
+        });
+    }
+
+    // --- 5b. SYSTEMS & PROCESS REVEAL + SCROLL PAUSE (WOW EFFECT) ---
+    // Text Reveal
+    gsap.utils.toArray('.text-reveal-line').forEach(line => {
+        gsap.fromTo(line,
+            { opacity: 0, y: 18 },
+            {
+                scrollTrigger: {
+                    trigger: line,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out"
+            }
+        );
+    });
+
+    // "Wow" Effect: Editorial Scroll Pause
+    // Pins the section for 300px of scroll to create a "read pause"
+    ScrollTrigger.create({
+        trigger: "#systems-process",
+        start: "center center",
+        end: "+=300",
+        pin: true,
+        scrub: true,
+        // No animation, just pin/hold
+    });
 
     // --- 6. EXISTING SKILLS GRID ---
     gsap.from(".skill-card", {

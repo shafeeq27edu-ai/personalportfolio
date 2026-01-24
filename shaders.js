@@ -114,7 +114,8 @@ export const displayFragmentShader = `
         
         // COMBINED Distortion: Purely driven by fluid
         // The distortion strength is high where the fluid is present
-        float distortionStrength = 0.06 * fluidIntensity; 
+        // INCREASED STRENGTH per user request
+        float distortionStrength = 0.15 * fluidIntensity; 
         
         vec2 flowVector = vec2(
             sin(correctedUv.y * 8.0 + n * 4.0 + fluidIntensity * 4.0),
@@ -134,8 +135,9 @@ export const displayFragmentShader = `
         float revealFactor = fluidIntensity; 
         
         // Modulate reveal by noise for ink-bleed effect
-        // 0.2 base threshold, spreads with high intensity
-        float mixFactor = smoothstep(0.2, 0.6, revealFactor + n * 0.2);
+        // UPDATED: Lower threshold (0.1) makes it reveal easier/faster
+        // Wider range (0.8) makes the transition smoother/richer
+        float mixFactor = smoothstep(0.1, 0.8, revealFactor + n * 0.3); // Increased noise influence too
         
         // 5. Bounds Check
         float mask = 1.0;

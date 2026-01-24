@@ -61,13 +61,13 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
     window.addEventListener('load', () => {
         if (typeof gsap === 'undefined') return;
 
-        gsap.set('.hero-figure', { opacity: 0, y: 40, scale: 1.04 });
+        gsap.set('.hero-figure-wrapper', { opacity: 0, y: 40, scale: 1.04 });
         gsap.set('.hero-title', { opacity: 0, y: 30 });
         gsap.set('.hero-footer-ui', { opacity: 0, y: 15 });
         gsap.set('.bg-grid', { opacity: 0.98 });
 
         const tl = gsap.timeline({ defaults: { ease: CONFIG.entrance.ease } });
-        tl.to('.hero-figure', { opacity: 1, y: 0, scale: 1, duration: CONFIG.entrance.duration })
+        tl.to('.hero-figure-wrapper', { opacity: 1, y: 0, scale: 1, duration: CONFIG.entrance.duration })
             .to('.hero-title', { opacity: 1, y: 0, duration: 1.2 }, "-=1.0")
             .to('.hero-footer-ui', { opacity: 1, y: 0, duration: 1.0 }, "-=0.8");
 
@@ -135,8 +135,8 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
 
 
     // 5. HERO INTERACTION (Mouse Follow)
-    const heroFigure = document.querySelector('.hero-figure');
-    if (heroFigure && window.innerWidth > 768) {
+    const heroWrapperNode = document.querySelector('.hero-figure-wrapper');
+    if (heroWrapperNode && window.innerWidth > 768) {
         let mouseX = 0, mouseY = 0;
         let currentX = 0, currentY = 0;
         let currentRot = 0;
@@ -155,7 +155,7 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
             currentY += (targetY - currentY) * CONFIG.heroMotion.lerp;
             currentRot += (targetRot - currentRot) * CONFIG.heroMotion.lerp;
 
-            gsap.set(heroFigure, { x: currentX, y: currentY, rotation: currentRot });
+            gsap.set(heroWrapperNode, { x: currentX, y: currentY, rotation: currentRot });
         });
 
         document.addEventListener('mouseleave', () => { mouseX = 0; mouseY = 0; });
