@@ -141,20 +141,37 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     gsap.set(".t-item", { y: 10 });
 
-    // --- 7. FOCUSED HERO OVERLAY ANIMATION ---
-    // The Hero Card shrinks and drifts slightly to make way for content
+    // --- 7. FOCUSED HERO OVERLAY ANIMATION (Organic Liquid Refinement) ---
     if (document.querySelector(".hero-overlay-card")) {
-        gsap.to(".hero-overlay-card", {
-            scale: 0.88, // Subtle shrink
-            y: -50,      // Gentle upward drift
+        const heroTl = gsap.timeline({
             scrollTrigger: {
                 trigger: "body",
                 start: "top top",
-                end: "20% top", // Finish early so it feels like a handoff
-                scrub: true
-            },
-            ease: "none"
+                end: "+=600",
+                scrub: 1.5 // Slower, heavier scrub for "liquid" weight
+            }
         });
+
+        // Combined Action: Organic Shrink + Blob Morph + Drift
+        heroTl
+            // Card Movement & Shape
+            .to(".hero-overlay-card", {
+                scaleX: 0.92,      // Breathing Scale (Squash)
+                scaleY: 0.88,      // Breathing Scale (Stretch)
+                y: -60,            // Gentle drift
+                x: 15,             // Natural subtle movement
+                // Liquid Border Morph: Top-heavy to Bottom-heavy feel
+                borderRadius: "30% 30% 40% 40% / 40% 40% 30% 30%",
+                ease: "power2.inOut" // Organic easing (Start slow, move, settle slow)
+            })
+            // Quote Reveal (Synced with the "breathing" moment)
+            .to(".hero-quote", {
+                opacity: 1,
+                y: 0,
+                color: "#EAEAEA",
+                duration: 0.8,
+                ease: "power2.out"
+            }, "<0.3"); // Start slightly later for narrative pacing
     }
 
     // --- 5b. SYSTEMS & PROCESS REVEAL + SCROLL PAUSE (WOW EFFECT) ---

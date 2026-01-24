@@ -332,6 +332,31 @@
                 -webkit-mask: none !important;
             }
 
+            /* --- HERO QUOTE --- */
+            .hero-quote {
+                position: absolute;
+                bottom: 2rem;
+                right: 3rem;
+                text-align: right;
+                font-family: 'Syncopate', sans-serif;
+                font-size: 0.9rem;
+                font-weight: 700;
+                color: #555;
+                /* Subtle Manifesto */
+                line-height: 1.4;
+                opacity: 0;
+                /* Default hidden, revealed on scroll */
+                transform: translateY(16px);
+                pointer-events: none;
+            }
+
+            @media (max-width: 768px) {
+                .hero-quote {
+                    display: none;
+                    /* Hide on mobile to avoid clutter */
+                }
+            }
+
             /* --- HERO LAYOUT FIX --- */
             .career-hero-content {
                 display: flex;

@@ -818,6 +818,46 @@ body.menu-open .nav-link {
     }
 }
 
+/* HERO FIGURE & LIQUID CANVAS */
+.hero-figure-wrapper {
+    position: relative;
+    /* Maximized size per user request */
+    width: 90vh;
+    height: 98vh;
+    max-width: 900px;
+    /* Much larger cap */
+    max-height: none;
+    /* remove height cap */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    /* Anchor to bottom to prevent foot crop */
+    z-index: 5;
+    transition: transform 0.1s ease-out;
+}
+
+#hero-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* Fallback Image */
+.hero-figure {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+    /* Crucial: Anchor image to bottom */
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
 /* --- Fallback / Canvas Wrapper (Legacy cleanup) --- */
 .canvas-wrapper {
     display: none;
