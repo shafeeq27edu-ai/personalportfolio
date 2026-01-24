@@ -156,22 +156,22 @@ document.addEventListener("DOMContentLoaded", () => {
         heroTl
             // Card Movement & Shape
             .to(".hero-overlay-card", {
-                scaleX: 0.92,      // Breathing Scale (Squash)
-                scaleY: 0.88,      // Breathing Scale (Stretch)
-                y: -60,            // Gentle drift
-                x: 15,             // Natural subtle movement
+                scaleX: 0.90,      // Breathing Scale (Squash)
+                scaleY: 0.85,      // Breathing Scale (Stretch) - little more shrink
+                y: 60,             // MOVED DOWN: Creates "Crop" at the top (gap appears)
+                x: 0,              // Centered (removed lateral drift for stability)
                 // Liquid Border Morph: Top-heavy to Bottom-heavy feel
                 borderRadius: "30% 30% 40% 40% / 40% 40% 30% 30%",
-                ease: "power2.inOut" // Organic easing (Start slow, move, settle slow)
+                ease: "power2.inOut" // Organic easing
             })
-            // Quote Reveal (Synced with the "breathing" moment)
+            // Quote Reveal
             .to(".hero-quote", {
                 opacity: 1,
                 y: 0,
                 color: "#EAEAEA",
                 duration: 0.8,
                 ease: "power2.out"
-            }, "<0.3"); // Start slightly later for narrative pacing
+            }, "<0.3");
     }
 
     // --- 5b. SYSTEMS & PROCESS REVEAL + SCROLL PAUSE (WOW EFFECT) ---
