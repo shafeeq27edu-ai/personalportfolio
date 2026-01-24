@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQ² | JOURNEY</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Righteous&family=Syncopate:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-logo">
+            <a href="index.html">SQ<sup>2</sup> / SHAFEEQ</a>
+        </div>
+        <div class="nav-menu-btn">
+            <span>MENU</span>
+            <div class="menu-icon">
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Full Screen Menu Overlay -->
+    <div id="nav-overlay">
+        <ul class="nav-links">
+            <li class="nav-item"><a href="index.html" class="nav-link"><span>HOME</span></a></li>
+            <li class="nav-item"><a href="achievements.html" class="nav-link"><span>ACHIEVEMENTS</span></a></li>
+            <li class="nav-item"><a href="bio.html" class="nav-link"><span>BIO</span></a></li>
+            <li class="nav-item"><a href="others.html" class="nav-link"><span>OTHERS</span></a></li>
+        </ul>
+    </div>
+
+    <main>
+        <!-- Horizontal Scroll Progress -->
+        <div class="scroll-progress"></div>
+
+        <!-- Hero Section -->
+        <section id="hero"
+            style="position: relative; height: 60vh; display: flex; align-items: center; justify-content: center; overflow: visible;">
+            <div class="hero-container" style="display: flex; align-items: center; justify-content: center;">
+                <h1 class="hero-title" style="position: relative; top: auto; font-size: 10vw;">THE <br> <span
+                        class="outline">JOURNEY</span></h1>
+            </div>
+        </section>
+
+        <!-- Use a clean section for content -->
+        <section class="content-section" style="padding: 10vh 5vw; background: #fff;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <h2 style="font-family: 'Syncopate'; font-size: 3rem; margin-bottom: 2rem;">FROM KARTING TO F1</h2>
+                <p style="font-size: 1.5rem; line-height: 1.6; max-width: 800px; color: #333;">
+                    Every champion starts somewhere. The path to the pinnacle of motorsport is paved with dedication,
+                    speed, and relentless improvement.
+                </p>
+
+                <div style="margin-top: 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div class="stat-box" style="height: 300px; justify-content: flex-end;">
+                        <span class="label">2015</span>
+                        <span class="value">KARTING CHAMPION</span>
+                    </div>
+                    <div class="stat-box" style="height: 300px; justify-content: flex-end;">
+                        <span class="label">2019</span>
+                        <span class="value">FORMULA 3 DEBUT</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 4rem;">
+                    <a href="index.html" class="cta-button" style="display: inline-flex;">
+                        <span>BACK TO HOME</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Page Transition Overlay -->
+    <div class="transition-overlay"></div>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <!-- Main Script -->
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>

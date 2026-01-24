@@ -16,9 +16,22 @@ export const FluidFragmentShader = `
     varying vec2 vUv;
     
     void main(){
-        vec4 prevState = texture2D(uPrevTrails, vUv);
-        float newValue = prevState.r * uDecay;
+        vec2 texelSize = 1.0 / uResolution;
+        vec2 uv = vUv;
         
+        // 1. Advection (Move fluid based on its own flow)
+        // Simple 3x3 blur to spread the fluid
+        vec4 old = texture2D(uPrevTrails, uv);
+        vec4 left = texture2D(uPrevTrails, uv - vec2(texelSize.x, 0.0));
+        vec4 right = texture2D(uPrevTrails, uv + vec2(texelSize.x, 0.0));
+        vec4 top = texture2D(uPrevTrails, uv + vec2(0.0, texelSize.y));
+        vec4 bottom = texture2D(uPrevTrails, uv - vec2(0.0, texelSize.y));
+        
+        vec4 blurred = (old + left + right + top + bottom) * 0.2;
+        
+        float newValue = blurred.r * uDecay;
+        
+        // 2. Mouse Interaction
         if (uIsMoving) {
             vec2 mouseDirection = uMouse - uPrevMouse;
             float lineLength = length(mouseDirection);
@@ -31,13 +44,13 @@ export const FluidFragmentShader = `
                 projAlong = clamp(projAlong, 0.0, lineLength);
                 vec2 closestPoint = uPrevMouse + projAlong * mouseDir;
                 float dist = length(vUv - closestPoint);
-                float lineWidth = 0.08; // Thinner, sharper brush
+                float lineWidth = 0.03; // Sharper pen
                 
-                // Quadratic falloff for smoother edges
+                // Smooth, high-intensity brush
                 float intensity = 1.0 - smoothstep(0.0, lineWidth, dist);
-                intensity = pow(intensity, 2.0);
+                intensity = pow(intensity, 3.0); // Spiky falloff
                 
-                newValue += intensity * 0.5; // Accumulate gently
+                newValue += intensity * 0.8; // Strong input
             }
         }
         

@@ -27,22 +27,68 @@
 </head>
 
 <body>
+    <!-- HUD Layer -->
+    <div class="hud-layer">
+        <!-- Corners -->
+        <div class="hud-corner top-left"></div>
+        <div class="hud-corner top-right">
+            <div class="rec-dot"></div> REC
+        </div>
+
+
+    </div>
+
+    <!-- Rev Counter (Scroll Progress) -->
+    <div class="rev-counter-container">
+        <div class="rev-bar"></div>
+        <div class="rev-bar"></div>
+        <div class="rev-bar"></div>
+        <div class="rev-bar"></div>
+        <div class="rev-bar"></div>
+        <div class="rev-bar"></div>
+        <div class="rev-bar"></div>
+        <div class="rev-bar"></div>
+        <div class="rev-bar"></div>
+        <div class="rev-bar"></div> <!-- 10 segments -->
+    </div>
+
+    <!-- Team Radio Widget -->
+    <div id="team-radio">
+        <div class="radio-content">
+            <div class="radio-header">
+                <span class="dot"></span> PIT WALL
+            </div>
+            <div class="radio-body">
+                <span class="sender">ENGR:</span>
+                <span class="message-text">Radio check. Loud and clear?</span>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- SAFE MODE: Custom Cursor & Preloader Hidden initially -->
     <div class="custom-cursor" style="display: none;"></div>
-    <div id="preloader">
-        <div class="loader-content">
-            <span class="loader-text">SYSTEM INITIALIZING</span>
-            <span class="loader-counter">00</span>
-        </div>
-        <div class="loader-bar-wrapper">
-            <div class="loader-bar"></div>
-        </div>
+
+    <!-- Shutter Transition -->
+    <div class="shutter-wipe"></div>
+
+    <!-- Background Grid -->
+    <div class="bg-grid">
+        <div class="scan-line"></div> <!-- Radar Effect -->
+        <div class="grid-line vertical"></div>
+        <div class="grid-line vertical"></div>
+        <div class="grid-line vertical"></div>
+        <div class="grid-line vertical"></div>
+        <div class="grid-line horizontal"></div>
+        <div class="grid-line horizontal"></div>
+        <div class="grid-line horizontal"></div>
     </div>
 
     <!-- Navigation -->
     <nav>
         <div class="nav-logo">
-            <a href="#">LN<sup>4</sup> / SHAFEEQ</a>
+            <a href="#">SQ<sup>2</sup> / SHAFEEQ</a>
         </div>
         <div class="nav-menu-btn">
             <span>MENU</span>
@@ -55,13 +101,24 @@
 
     <!-- Full Screen Menu Overlay -->
     <div id="nav-overlay">
+        <!-- Menu Grid (Visual Only) -->
+        <div class="bg-grid menu-grid" style="z-index: -1;">
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line horizontal"></div>
+            <div class="grid-line horizontal"></div>
+            <div class="grid-line horizontal"></div>
+        </div>
+
         <ul class="nav-links">
-            <li class="nav-item"><a href="#" class="nav-link" data-target="who"><span>Who am I ?</span></a></li>
-            <li class="nav-item"><a href="#" class="nav-link" data-target="achievements"><span>Achievements</span></a>
-            </li>
-            <li class="nav-item"><a href="#" class="nav-link" data-target="career"><span>Career</span></a></li>
-            <li class="nav-item"><a href="#" class="nav-link" data-target="social"><span>Social</span></a></li>
-            <li class="nav-item"><a href="#" class="nav-link" data-target="others"><span>Others</span></a></li>
+            <li class="nav-item"><a href="#" class="nav-link">HOME</a></li>
+            <li class="nav-item"><a href="who.html" class="nav-link">WHO AM I?</a></li>
+            <li class="nav-item"><a href="achievements.html" class="nav-link">ACHIEVEMENTS</a></li>
+            <li class="nav-item"><a href="bio.html" class="nav-link">BIO</a></li>
+            <li class="nav-item"><a href="career.html" class="nav-link">CAREER</a></li>
+            <li class="nav-item"><a href="others.html" class="nav-link">OTHERS</a></li>
         </ul>
     </div>
 
@@ -168,142 +225,259 @@
     </div>
 
     <main>
-        <!-- Horizontal Scroll Progress -->
-        <div class="scroll-progress"></div>
+        <div id="home-visual-wrapper" style="transform-origin: center top; will-change: transform;">
+            <!-- Horizontal Scroll Progress -->
+            <div class="scroll-progress"></div>
 
-        <!-- Hero Section -->
-        <section id="hero">
-            <div class="hero-container">
-                <!-- Parallax Background Layer -->
-                <div class="parallax-layer bg-graphics">
-                    <img src="contours.png" alt="" class="contours">
+            <!-- Hero Section -->
+            <section id="hero">
+                <div class="hero-container">
+                    <!-- Parallax Background Layer (Contours Removed for Clean Look) -->
+                    <!-- 
+                    <div class="parallax-layer bg-graphics">
+                        <img src="contours.png" alt="" class="contours">
+                    </div> 
+                    -->
+
+                    <!-- Main Interactions -->
+                    <div class="hero-content">
+                        <div class="header-text-container">
+                            <h1 class="hero-title">NEXT_GEN <br> <span class="outline">REVOLUTION</span></h1>
+                        </div>
+
+                        <!-- Hero Image (3D Tilt Ready) -->
+                        <div class="hero-figure-wrapper">
+                            <img src="casual.png" class="hero-figure" alt="Driver Portrait">
+                        </div>
+
+                        <div class="hero-footer-ui">
+                            <div class="next-race-box">
+                                <span class="label">NEXT RACE</span>
+                                <span class="value-mysterious">?</span>
+                            </div>
+                            <div class="neon-switch">
+                                <div class="switch-knob"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Re-integrated CAREER CTA -->
+                    <div class="stat-box right">
+                        <a href="career.html" class="cta-button">
+                            <span>CAREER</span>
+                            <div class="icon-arrow">→</div>
+                        </a>
+                    </div>
                 </div>
+            </section>
 
-                <!-- Main Interactions -->
-                <div class="hero-content">
-                    <div class="header-text-container">
-                        <h1 class="hero-title">NEXT_GEN <br> <span class="outline">REVOLUTION</span></h1>
-                    </div>
+            <!-- Separator -->
+            <!-- <div class="section-separator"></div> -->
 
-                    <!-- 3D Canvas / Reveal Layer -->
-                    <div class="canvas-wrapper">
-                        <!-- Canvas DISABLED for Stability -->
-                        <canvas id="fluid-canvas" style="display: none;"></canvas>
 
-                        <!-- Fallback image reset to CASUAL (Visible) -->
-                        <img src="casual.png" class="fallback-img" alt="Driver Portrait">
-                    </div>
 
-                    <div class="hero-footer-ui">
-                        <div class="stat-box">
-                            <span class="label">NEXT RACE</span>
-                            <span class="value">MELBOURNE GP</span>
-                        </div>
-
-                        <div class="scroll-indicator">
-                            SCROLL TO EXPLORE
-                        </div>
-
-                        <div class="stat-box right">
-                            <a href="#" class="cta-button">
-                                <span>JOURNEY</span>
-                                <div class="icon-arrow">→</div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Journey Section (Horizontal Scroll) -->
-        <section id="journey">
-            <div class="journey-wrapper">
-                <div class="journey-header">
-                    <h2>THE JOURNEY</h2>
-                    <span class="subtitle">FROM KARTING TO F1</span>
-                </div>
-                <div class="journey-container">
-                    <!-- Card 1 -->
-                    <div class="journey-card">
-                        <div class="card-number">01</div>
-                        <div class="card-image">
-                            <!-- Placeholder, can be replaced with verified assets later -->
-                            <div class="img-placeholder" style="background: #222;"></div>
-                        </div>
-                        <div class="card-content">
-                            <h3>KARTING ORIGINS</h3>
-                            <p>Dominated the European circuit, becoming the youngest ever World Karting Champion.</p>
-                            <span class="year">2014</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 2 -->
-                    <div class="journey-card">
-                        <div class="card-number">02</div>
-                        <div class="card-image">
-                            <div class="img-placeholder" style="background: #333;"></div>
-                        </div>
-                        <div class="card-content">
-                            <h3>F3 CHAMPION</h3>
-                            <p>Secured the European F3 title with a record-breaking rookie season performance.</p>
-                            <span class="year">2017</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 3 -->
-                    <div class="journey-card">
-                        <div class="card-number">03</div>
-                        <div class="card-image">
-                            <div class="img-placeholder" style="background: #444;"></div>
-                        </div>
-                        <div class="card-content">
-                            <h3>F1 DEBUT</h3>
-                            <p>Joined McLaren as the youngest British driver in history, making an immediate impact.</p>
-                            <span class="year">2019</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 4 -->
-                    <div class="journey-card">
-                        <div class="card-number">04</div>
-                        <div class="card-image">
-                            <div class="img-placeholder" style="background: #555;"></div>
-                        </div>
-                        <div class="card-content">
-                            <h3>MAIDEN WIN</h3>
-                            <p>Defining victory at the Miami Grand Prix, proving championship potential.</p>
-                            <span class="year">2024</span>
-                        </div>
-                    </div>
+            <!-- Marquee or Divider -->
+            <div class="tech-marquee full-width">
+                <div class="track">
+                    <span>NEXT GEN</span> — <span>SPEED</span> — <span>CODE</span> — <span>REPEAT</span> —
+                    <span>NEXT GEN</span> — <span>SPEED</span> — <span>CODE</span> — <span>REPEAT</span>
                 </div>
             </div>
-        </section>
 
-        <!-- Footer -->
-        <footer>
-            <div class="footer-content">
-                <div class="footer-left">
-                    <span>© 2026 SHAFEEQ</span>
-                    <span>LN4 DRIVER PROFILE</span>
+
+            <!-- Journey Section (Horizontal Scroll) -->
+            <section id="journey">
+                <div class="journey-wrapper">
+                    <div class="journey-header">
+                        <h2>THE JOURNEY</h2>
+                        <span class="subtitle">FROM KARTING TO F1</span>
+                    </div>
+                    <div class="journey-container">
+                        <!-- Card 1 -->
+                        <div class="journey-card">
+                            <div class="card-number">01</div>
+                            <div class="card-image">
+                                <!-- Placeholder, can be replaced with verified assets later -->
+                                <div class="img-placeholder" style="background: #222;"></div>
+                            </div>
+                            <div class="card-content">
+                                <h3>KARTING ORIGINS</h3>
+                                <p>Dominated the European circuit, becoming the youngest ever World Karting Champion.
+                                </p>
+                                <span class="year">2014</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="journey-card">
+                            <div class="card-number">02</div>
+                            <div class="card-image">
+                                <div class="img-placeholder" style="background: #333;"></div>
+                            </div>
+                            <div class="card-content">
+                                <h3>F3 CHAMPION</h3>
+                                <p>Secured the European F3 title with a record-breaking rookie season performance.</p>
+                                <span class="year">2017</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="journey-card">
+                            <div class="card-number">03</div>
+                            <div class="card-image">
+                                <div class="img-placeholder" style="background: #444;"></div>
+                            </div>
+                            <div class="card-content">
+                                <h3>F1 DEBUT</h3>
+                                <p>Joined McLaren as the youngest British driver in history, making an immediate impact.
+                                </p>
+                                <span class="year">2019</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="journey-card">
+                            <div class="card-number">04</div>
+                            <div class="card-image">
+                                <div class="img-placeholder" style="background: #555;"></div>
+                            </div>
+                            <div class="card-content">
+                                <h3>MAIDEN WIN</h3>
+                                <p>Defining victory at the Miami Grand Prix, proving championship potential.</p>
+                                <span class="year">2024</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="footer-right">
-                    <a href="#">INSTAGRAM</a>
-                    <a href="#">TWITTER</a>
-                    <a href="#">PARTNERS</a>
+            </section>
+
+            <!-- ================================================================= -->
+            <!-- NEW SECTIONS (Editorial / Storytelling) -->
+            <!-- ================================================================= -->
+
+            <!-- NEW: SECOND PRESENCE (Cinematic Pause) -->
+            <section id="second-presence">
+                <div class="presence-container">
+                    <div class="presence-figure-wrapper">
+                        <img src="racing.png" alt="Focus Mode" class="presence-figure">
+                        <div class="presence-overlay"></div>
+                    </div>
+                    <div class="presence-text-container">
+                        <h2 class="presence-title">SILENCE <br> THE NOISE.</h2>
+                    </div>
                 </div>
-            </div>
-        </footer>
+            </section>
+
+            <!-- 1. MINDSET / PHILOSOPHY -->
+            <section id="mindset" class="editorial-section">
+                <div class="content-wrapper centered-text">
+                    <h2 class="editorial-heading">VISION <br> OVER HYPE.</h2>
+                    <div class="spacer-small"></div>
+                    <p class="editorial-text large">Discipline is the bridge.</p>
+                    <p class="editorial-text large">Curiosity is the engine.</p>
+                    <p class="editorial-text large">Long-term games with long-term people.</p>
+                </div>
+            </section>
+
+            <!-- Separator -->
+            <div class="section-separator line-reveal"></div>
+
+            <!-- 2. WHAT I DO / SKILLS -->
+            <section id="skills" class="editorial-section">
+                <div class="content-wrapper split-layout">
+                    <div class="sticky-label">
+                        <span class="label-text">CAPABILITIES</span>
+                    </div>
+                    <div class="list-layout">
+                        <div class="list-item">
+                            <span class="list-title">Creative Direction</span>
+                            <span class="list-desc">Turning abstract concepts into cohesive visual systems.</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-title">Frontend Engineering</span>
+                            <span class="list-desc">Building smooth, performant, and interactive interfaces.</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-title">Motion Design</span>
+                            <span class="list-desc">Adding life and physics to static layouts.</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-title">Experimentation</span>
+                            <span class="list-desc">Pushing browsers to their limits with WebGL & Shaders.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Separator -->
+            <div class="section-separator line-reveal"></div>
+
+            <!-- 3. HIGHLIGHTS (Timeline) -->
+            <section id="highlights" class="editorial-section">
+                <div class="content-wrapper split-layout">
+                    <div class="sticky-label">
+                        <span class="label-text">LOGBOOK</span>
+                    </div>
+                    <div class="timeline-layout">
+                        <div class="timeline-item">
+                            <span class="timeline-year">2024</span>
+                            <p class="timeline-content">Started exploring advanced 3D web interactions.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-year">2023</span>
+                            <p class="timeline-content">Shipped first major full-stack project.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-year">2022</span>
+                            <p class="timeline-content">Decided to move beyond templates and learn the core.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-year">2020</span>
+                            <p class="timeline-content">Hello World. The journey began.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. TRANSITION STATEMENT -->
+            <section id="transition" class="editorial-section full-height centered-text">
+                <div class="content-wrapper">
+                    <p class="editorial-text huge">THE BEST LAP <br> IS THE NEXT ONE.</p>
+                    <div class="spacer-medium"></div>
+                    <a href="career.html" class="cta-button minimal">
+                        <span>VIEW CAREER</span> <!-- Reusing arrow logic via CSS or simple link -->
+                    </a>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer>
+                <div class="footer-content">
+                    <div class="footer-left">
+                        <span>© 2026 SHAFEEQ</span>
+                        <span>LN4 DRIVER PROFILE</span>
+                    </div>
+                    <div class="footer-right">
+                        <a href="#">INSTAGRAM</a>
+                        <a href="#">TWITTER</a>
+                        <a href="#">PARTNERS</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
     </main>
 
     <!-- SVG Filters for Liquid Effect -->
-    <svg style="display: none;">
+    <!-- SVG Filters for Liquid Effect (DISABLED) -->
+    <!-- 
+    <svg style="width: 0; height: 0; position: absolute; visibility: hidden;">
         <defs>
             <filter id="liquid-distortion">
-                <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="1" result="warp" />
-                <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="0" in="SourceGraphic" in2="warp" />
+                <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="1" seed="1" result="warp" />
+                <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="20" in="SourceGraphic" in2="warp" />
             </filter>
         </defs>
-    </svg>
+    </svg> 
+    -->
 
     <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -312,6 +486,8 @@
 
     <!-- Main Script (Active but Safe Mode) -->
     <script type="module" src="script.js"></script>
+    <script src="menu-fix.js"></script>
+    <script src="animation.js"></script>
 </body>
 
 </html>

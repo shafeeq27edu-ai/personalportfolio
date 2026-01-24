@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQ² | CAREER</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Righteous&family=Syncopate:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* --- DARK RACE THEME --- */
+        :root {
+            --car-bg: #050505;
+            --car-accent: #FF0000;
+            /* Race Red */
+            --car-border: #333;
+            --car-text: #EAEAEA;
+        }
+
+        body {
+            background-color: var(--car-bg);
+            color: var(--car-text);
+            overflow-x: hidden;
+            font-family: 'DM Mono', monospace;
+        }
+
+        .nav-logo a,
+        .nav-menu-btn {
+            color: #FFF !important;
+        }
+
+        .nav-menu-btn .line {
+            background-color: #FFF !important;
+        }
+
+        .career-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15vh 5vw;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 4rem;
+        }
+
+        /* --- LEFT: TIMELINE --- */
+        .timeline-section {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 1px solid var(--car-border);
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -5px;
+            /* Half width of bar (1px) + dot (9px) */
+            width: 9px;
+            height: 9px;
+            background: var(--car-accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--car-accent);
+        }
+
+        .lap-item {
+            margin-bottom: 6rem;
+            opacity: 0;
+            /* Anim start */
+        }
+
+        .lap-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #222;
+            padding-bottom: 0.5rem;
+        }
+
+        .lap-number {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.5rem;
+            color: var(--car-accent);
+            font-weight: 700;
+        }
+
+        .lap-year {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .lap-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FFF;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .lap-desc {
+            color: #888;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.2rem 0.6rem;
+            border-radius: 2px;
+            color: #AAA;
+        }
+
+        /* --- RIGHT: STICKY STATS --- */
+        .stats-sidebar {
+            position: sticky;
+            top: 20vh;
+            height: fit-content;
+            background: rgba(15, 15, 15, 0.6);
+            border: 1px solid var(--car-border);
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar-title {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.2rem;
+            color: #FFF;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--car-accent);
+            padding-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #222;
+            padding-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .stat-val {
+            color: #FFF;
+            font-weight: 700;
+            font-family: 'Syncopate', sans-serif;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .career-container {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-sidebar {
+                position: relative;
+                top: 0;
+                margin-bottom: 4rem;
+                order: -1;
+            }
+        }
+
+        /* Bg Grid */
+        .fixed-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-logo"><a href="index.html">SQ<sup>2</sup> / SHAFEEQ</a></div>
+        <div class="nav-menu-btn"><span>MENU</span>
+            <div class="menu-icon">
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="nav-overlay">
+        <div class="bg-grid menu-grid" style="z-index: -1;">
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line horizontal"></div>
+            <div class="grid-line horizontal"></div>
+            <div class="grid-line horizontal"></div>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+            <li class="nav-item"><a href="who.html" class="nav-link">WHO AM I?</a></li>
+            <li class="nav-item"><a href="achievements.html" class="nav-link">ACHIEVEMENTS</a></li>
+            <li class="nav-item"><a href="bio.html" class="nav-link">BIO</a></li>
+            <li class="nav-item"><a href="career.html" class="nav-link">CAREER</a></li>
+            <li class="nav-item"><a href="others.html" class="nav-link">OTHERS</a></li>
+        </ul>
+    </div>
+
+    <!-- Background Grid -->
+    <div class="fixed-grid bg-grid">
+        <div class="grid-line vertical"></div>
+        <div class="grid-line vertical"></div>
+        <div class="grid-line horizontal"></div>
+        <div class="grid-line horizontal"></div>
+    </div>
+
+    <main id="career-page">
+
+        <!-- 1. CAREER HERO (Matrix Style) -->
+        <section id="career-hero">
+            <!-- Background Matrix Effect (Canvas) -->
+            <canvas id="matrix-canvas"></canvas>
+
+            <div class="career-hero-content">
+                <!-- Left: Cowboy Figure -->
+                <div class="hero-left">
+                    <div class="figure-wrapper">
+                        <img src="cowboy_hologram.png" alt="Shafeeq Portrait" class="career-figure hologram-effect">
+                    </div>
+                </div>
+
+                <!-- Center/Right: Text Block -->
+                <div class="hero-center">
+                    <h1 class="career-title reveal-text">NO GRIND.<br>PURE LOGIC.</h1>
+                    <div class="career-intro">
+                        <p class="highlight-border reveal-text">HARD WORK IS A BUG.<br>SMART WORK IS THE PATCH.</p>
+                        <p class="status-badge reveal-text">SYSTEM: OPTIMIZED</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. BUILD MODE (Editorial) -->
+        <section id="build-mode">
+            <div class="build-grid">
+                <div class="build-item">
+                    <span class="build-sub">> METHODOLOGY</span>
+                    <h2 class="build-line">LEARNING <span class="build-accent">></span> FLEXING</h2>
+                </div>
+                <div class="build-item">
+                    <span class="build-sub">> ARCHITECTURE</span>
+                    <h2 class="build-line">SYSTEMS <span class="build-accent">></span> SHORTCUTS</h2>
+                </div>
+                <div class="build-item">
+                    <span class="build-sub">> PHILOSOPHY</span>
+                    <h2 class="build-line">CONSISTENCY <span class="build-accent">></span> HYPE</h2>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. CAREER TIMELINE (Clean Editorial) -->
+        <section id="career-timeline">
+            <div class="timeline-editorial">
+                <!-- Item 3 -->
+                <div class="t-item">
+                    <span class="t-year">PRESENT</span>
+                    <div class="t-content">
+                        <div class="t-role">B.Tech CSE (AI & ML)</div>
+                        <div class="t-org">Yenepoya University</div>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="t-item">
+                    <span class="t-year">2021-2023</span>
+                    <div class="t-content">
+                        <div class="t-role">High School (11th-12th)</div>
+                        <div class="t-org">Velammal Bodhi Campus, Puducherry</div>
+                    </div>
+                </div>
+                <!-- Item 1 -->
+                <div class="t-item">
+                    <span class="t-year">2009-2021</span>
+                    <div class="t-content">
+                        <div class="t-role">Schooling (LKG-10th)</div>
+                        <div class="t-org">Naahar Public School</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 2. TIMELINE MARQUEE (Continuous "SHAFEEQ" Loop) -->
+        <!-- REMOVED MARQUEE SECTION -->
+
+
+        <!-- 3. SECONDARY PLACEHOLDER -->
+        <!-- 3. MINDSET: "THE ALGORITHM" -->
+        <section id="career-mindset">
+            <div class="content-wrapper">
+                <div class="mindset-grid">
+                    <div class="mindset-left">
+                        <h2 class="section-title">THE<br>ALGORITHM</h2>
+                    </div>
+                    <div class="mindset-right">
+                        <div class="terminal-card">
+                            <div class="terminal-header">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <span class="term-title">manifesto.exe</span>
+                            </div>
+                            <div class="terminal-body">
+                                <p>> INITIATING TRUTH_PROTOCOL...</p>
+                                <p>> EFFICIENCY IS NOT AN ACCIDENT. IT IS ARCHITECTURE.</p>
+                                <p>> I DON'T JUST WRITE CODE. I OPTIMIZE REALITY.</p>
+                                <br>
+                                <p class="highlight-text">"Why guess when you can calculate? Why grind when you can
+                                    automate?"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SKILLS: "TECH STACK" -->
+        <section id="career-skills">
+            <div class="content-wrapper">
+                <h2 class="section-title center">SYSTEM MODULES</h2>
+                <div class="skills-grid">
+                    <!-- Tech Item 1 -->
+                    <div class="skill-card">
+                        <div class="skill-icon">AI</div>
+                        <h3>ARTIFICIAL INTELLIGENCE</h3>
+                        <p>TensorFlow, PyTorch, Neural Nets</p>
+                    </div>
+                    <!-- Tech Item 2 -->
+                    <div class="skill-card">
+                        <div class="skill-icon">ML</div>
+                        <h3>MACHINE LEARNING</h3>
+                        <p>Predictive Models, Data Mining</p>
+                    </div>
+                    <!-- Tech Item 3 -->
+                    <div class="skill-card">
+                        <div class="skill-icon">FS</div>
+                        <h3>FULL STACK</h3>
+                        <p>React, Node.js, Next.js</p>
+                    </div>
+                    <!-- Tech Item 4 -->
+                    <div class="skill-card">
+                        <div class="skill-icon">UI</div>
+                        <h3>DIGITAL DESIGN</h3>
+                        <p>Figma, Spline, GSAP</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="atmospheric-vignette"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script type="module" src="script.js"></script>
+    <script src="menu-fix.js"></script>
+    <script src="career_matrix.js"></script>
+
+    <!-- Removed old inline timeline script as it doesn't match new structure -->
+</body>
+
+</html>

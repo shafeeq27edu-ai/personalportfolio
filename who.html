@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQ² | WHO AM I?</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Righteous&family=Syncopate:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- ALIENKIND RED THEME --- */
+        :root {
+            --ak-red: #FF0000;
+            --ak-black: #050505;
+            --ak-text: #111;
+        }
+
+        body {
+            background-color: var(--ak-red);
+            color: var(--ak-black);
+            overflow-x: hidden;
+            font-kerning: none;
+        }
+
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background-color: var(--ak-red);
+        }
+
+        /* --- VISUAL SIDE (Image) --- */
+        .visual-side {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--ak-red);
+        }
+
+        .portrait-img {
+            height: 110%;
+            width: auto;
+            object-fit: cover;
+            mix-blend-mode: normal;
+            opacity: 0;
+            will-change: transform;
+        }
+
+        /* --- CONTENT SIDE --- */
+        .content-side {
+            padding: 10vh 8vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .content-wrapper {
+            max-width: 650px;
+        }
+
+        /* --- MASKING & TYPOGRAPHY --- */
+        .mask-container {
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 0.2rem;
+            /* Tight spacing */
+            /* Debug: background: rgba(0,0,0,0.1); */
+        }
+
+        /* Typography */
+        .cyber-header {
+            font-family: 'Syncopate', sans-serif;
+            /* Tech feel */
+            font-size: clamp(3.5rem, 6vw, 7rem);
+            line-height: 0.8;
+            text-transform: uppercase;
+            color: var(--ak-black);
+            letter-spacing: -4px;
+            font-weight: 800;
+            margin: 0;
+            /* Reset for masks */
+        }
+
+        .cyber-header-wrapper {
+            margin-bottom: 2rem;
+        }
+
+        .cyber-header .highlight {
+            color: #FFF;
+            -webkit-text-fill-color: #FFF;
+        }
+
+        /* Decoration: Blinking Block Cursor */
+        .cursor-blink {
+            display: inline-block;
+            width: 0.6em;
+            height: 0.8em;
+            background-color: #000;
+            margin-left: 0.1em;
+            vertical-align: baseline;
+            animation: blink-anim 1s step-end infinite;
+        }
+
+        @keyframes blink-anim {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .bio-text {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.05rem;
+            line-height: 1.4;
+            color: #111;
+            font-weight: 500;
+            margin: 0;
+            text-transform: uppercase;
+            /* Brutalist touch */
+            letter-spacing: -0.5px;
+        }
+
+        .bio-block {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .bio-text.lead {
+            font-size: 1.4rem;
+            color: #000;
+            font-weight: 700;
+            letter-spacing: -1px;
+            border-left: 4px solid #000;
+            padding-left: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .meta-data {
+            display: flex;
+            gap: 2rem;
+            margin-top: 4rem;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.7rem;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            opacity: 0;
+            /* Animated */
+        }
+
+        /* --- DECOR --- */
+        .deco-line {
+            width: 100%;
+            height: 4px;
+            background: #000;
+            margin-bottom: 2rem;
+            transform-origin: left;
+        }
+
+        /* --- NAVIGATION OVERRIDE --- */
+        nav {
+            mix-blend-mode: normal !important;
+        }
+
+        .nav-logo a,
+        .nav-menu-btn {
+            color: #000 !important;
+        }
+
+        .nav-menu-btn .line {
+            background-color: #000 !important;
+        }
+
+        /* --- GLITCH & TICKER UPGRADES --- */
+        ::selection {
+            background: #00FF00;
+            /* Hacker Green Selection */
+            color: #000;
+        }
+
+        /* Glitch Effect on Image Hover */
+        .img-glitch-container {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .portrait-img {
+            transition: transform 0.3s ease;
+        }
+
+        .img-glitch-container:hover .portrait-img {
+            animation: glitch-rgb 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            transform: scale(1.02);
+        }
+
+        @keyframes glitch-rgb {
+            0% {
+                transform: translate(0)
+            }
+
+            20% {
+                transform: translate(-2px, 2px)
+            }
+
+            40% {
+                transform: translate(-2px, -2px)
+            }
+
+            60% {
+                transform: translate(2px, 2px)
+            }
+
+            80% {
+                transform: translate(2px, -2px)
+            }
+
+            100% {
+                transform: translate(0)
+            }
+        }
+
+        /* Running Ticker */
+        .ticker-wrap {
+            position: absolute;
+            bottom: 5vh;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            opacity: 0;
+            /* Fade in with GSAP */
+            pointer-events: none;
+        }
+
+        .ticker {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            margin-right: 3rem;
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.3);
+            /* Subtle watermark look */
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .visual-side {
+                height: 45vh;
+                order: -1;
+            }
+
+            .content-side {
+                padding: 5vh 5vw;
+                justify-content: flex-start;
+                /* Align top on mobile */
+            }
+
+            .ticker-wrap {
+                bottom: 2vh;
+            }
+
+            .cyber-header {
+                font-size: 3rem;
+                letter-spacing: -2px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-logo">
+            <a href="index.html">SQ<sup>2</sup> / SHAFEEQ</a>
+        </div>
+        <div class="nav-menu-btn">
+            <span>MENU</span>
+            <div class="menu-icon">
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Menu Overlay -->
+    <div id="nav-overlay">
+        <!-- Menu Grid (Visual Only) -->
+        <div class="bg-grid menu-grid" style="z-index: -1;">
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line horizontal"></div>
+            <div class="grid-line horizontal"></div>
+            <div class="grid-line horizontal"></div>
+        </div>
+
+        <ul class="nav-links">
+            <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+            <li class="nav-item"><a href="who.html" class="nav-link">WHO AM I?</a></li>
+            <li class="nav-item"><a href="achievements.html" class="nav-link">ACHIEVEMENTS</a></li>
+            <li class="nav-item"><a href="bio.html" class="nav-link">BIO</a></li>
+            <li class="nav-item"><a href="career.html" class="nav-link">CAREER</a></li>
+            <li class="nav-item"><a href="others.html" class="nav-link">OTHERS</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content: Split Layout -->
+    <main class="split-layout">
+
+        <!-- Left: Image (Editorial Vibe) -->
+        <section class="visual-side">
+            <div class="img-glitch-container">
+                <img src="casual.png" alt="Shafeeq Portrait" class="portrait-img">
+            </div>
+        </section>
+
+        <!-- Right: Content (Gen Z / Rizz) -->
+        <section class="content-side">
+            <div class="content-wrapper">
+                <div class="deco-line"></div>
+
+                <div class="cyber-header-wrapper">
+                    <!-- Data attributes hold the final text for scramble effect -->
+                    <h1 class="cyber-header scramble-target" data-value="DIGITAL">
+                        <span class="scramble-span">DIGITAL</span>
+                    </h1>
+                    <h1 class="cyber-header">
+                        <span class="highlight scramble-target" data-value="ARCHITECT">ARCHITECT</span><span
+                            class="cursor-blink">_</span>
+                    </h1>
+                </div>
+
+                <div class="bio-block">
+                    <p class="bio-text lead scramble-target" data-value="I don't just code. I warp reality.">
+                        I don't just code. I warp reality.
+                    </p>
+
+                    <p class="bio-text glitch-reveal" style="margin-top: 2rem;">
+                        <strong>SPAWN POINT:</strong> Villupuram, TN <br>
+                        <strong>VERSION:</strong> 2007 (Gen Z Native)
+                    </p>
+
+                    <div class="bio-text glitch-reveal" style="margin-top: 1.5rem;">
+                        <p>
+                            Most websites are static. Defaults. Boring.
+                            I build digital hallucinations that live rent-free in your graphics card.
+                        </p>
+                    </div>
+
+                    <div class="bio-text glitch-reveal" style="margin-top: 1rem;">
+                        <p>
+                            No templates. No drag-and-drop.
+                            Just raw syntax and interfaces that mog the competition.
+                            Welcome to the new standard.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="meta-data fade-in-target">
+                    <span>SYSTEM: ONLINE</span>
+                    <span>//</span>
+                    <span>PING: 1ms</span>
+                </div>
+            </div>
+
+            <!-- NEW: Infinite Ticker -->
+            <div class="ticker-wrap fade-in-target">
+                <div class="ticker">
+                    <div class="ticker-item">FULL STACK</div>
+                    <div class="ticker-item">CREATIVE DEV</div>
+                    <div class="ticker-item">UI/UX KILLER</div>
+                    <div class="ticker-item">NEXT.JS</div>
+                    <div class="ticker-item">THREE.JS</div>
+                    <div class="ticker-item">MOTION</div>
+                    <!-- Duplicate for loop -->
+                    <div class="ticker-item">FULL STACK</div>
+                    <div class="ticker-item">CREATIVE DEV</div>
+                    <div class="ticker-item">UI/UX KILLER</div>
+                    <div class="ticker-item">NEXT.JS</div>
+                    <div class="ticker-item">THREE.JS</div>
+                    <div class="ticker-item">MOTION</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="menu-fix.js"></script>
+
+    <script>
+        // --- ALIENKIND HIGH-PERFORMANCE SCRAMBLE (RAF + LAYOUT LOCK) ---
+
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        function scrambleElement(element, finalValue, duration = 1500) {
+            // 1. LAYOUT LOCK: Measure and freeze dimensions to prevent reflow lag
+            const rect = element.getBoundingClientRect();
+            // Lock width to current computed width (safeguard against collapse)
+            // Note: If element is currently empty, this will be 0. 
+            // We assume text clears AFTER this measure if needed.
+            // In our logic, text is CLEARED in the loop setup, so we measure existing layout first.
+            if (rect.width > 0) {
+                element.style.width = `${rect.width}px`;
+                element.style.height = `${rect.height}px`;
+                element.style.display = "inline-block";
+                element.style.textAlign = "left";
+            }
+
+            let startTime = null;
+
+            function update(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Ease Out Quart for snappy finish
+                const ease = 1 - Math.pow(1 - progress, 4);
+
+                const revealIdx = Math.floor(ease * finalValue.length);
+
+                let output = "";
+                for (let i = 0; i < finalValue.length; i++) {
+                    if (i < revealIdx) {
+                        output += finalValue[i];
+                    } else {
+                        // "Seeded" Random: only change char every few frames to reduce flicker noise
+                        // Use (timestamp / N) to hold char for N ms.
+                        const seed = Math.floor(timestamp / 60) + i;
+                        output += chars[seed % chars.length];
+                    }
+                }
+
+                element.innerText = output;
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    element.innerText = finalValue; // Ensure purity
+                    // Optional: unlock if needed, but keeping stable is safer
+                    // element.style.width = 'auto'; // Unlock
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin();
+
+            const tl = gsap.timeline();
+
+            // 1. Image Entry
+            tl.fromTo(".portrait-img",
+                { opacity: 0, scale: 1.1, filter: "brightness(150%)" },
+                { opacity: 1, scale: 1, filter: "brightness(100%)", duration: 0.4, ease: "power2.out" }
+            );
+
+            // 2. Line
+            tl.fromTo(".deco-line",
+                { scaleX: 0 },
+                { scaleX: 1, duration: 0.8, ease: "power4.out" },
+                "-=0.2"
+            );
+
+            // 3. Trigger Scramble
+            const scrambleTargets = document.querySelectorAll('.scramble-target');
+
+            scrambleTargets.forEach((el, index) => {
+                const textTarget = el.classList.contains('highlight') ? el : (el.querySelector('.scramble-span') || el);
+                const final = el.getAttribute('data-value');
+
+                if (!final) return;
+
+                // Stagger start
+                setTimeout(() => {
+                    textTarget.style.opacity = 1;
+                    scrambleElement(textTarget, final, 1200);
+                }, 300 + (index * 200));
+            });
+
+            // 4. Bio Text Reveal
+            tl.fromTo(".glitch-reveal",
+                { opacity: 0, x: -20 },
+                { opacity: 1, x: 0, duration: 0.4, stagger: 0.1, ease: "power2.out" },
+                "-=0.5"
+            );
+
+            // 5. Meta Data & Ticker
+            tl.fromTo(".fade-in-target", { opacity: 0 }, { opacity: 0.4, duration: 1 });
+        });
+    </script>
+</body>
+
+</html>

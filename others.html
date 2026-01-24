@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQ² | THE LAB</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Righteous&family=Syncopate:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+        /* --- LAB THEME (Dark Wireframe) --- */
+        :root {
+            --lab-bg: #050505;
+            --lab-grid: #1a1a1a;
+            --lab-accent: #00FFFF;
+            /* CYAN */
+            --lab-text: #EAEAEA;
+        }
+
+        body {
+            background-color: var(--lab-bg);
+            color: var(--lab-text);
+            overflow-x: hidden;
+            font-family: 'DM Mono', monospace;
+            background-image:
+                linear-gradient(var(--lab-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--lab-grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Nav Override */
+        .nav-logo a,
+        .nav-menu-btn {
+            color: #FFF !important;
+        }
+
+        .nav-menu-btn .line {
+            background-color: #FFF !important;
+        }
+
+        .lab-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15vh 5vw;
+        }
+
+        .header-section {
+            border-bottom: 2px solid var(--lab-accent);
+            padding-bottom: 1rem;
+            margin-bottom: 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .lab-title {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            line-height: 0.8;
+            color: transparent;
+            -webkit-text-stroke: 1px #FFF;
+            margin: 0;
+        }
+
+        .lab-title.filled {
+            color: #FFF;
+            -webkit-text-stroke: 0;
+        }
+
+        .lab-badge {
+            background: var(--lab-accent);
+            color: #000;
+            padding: 0.2rem 0.5rem;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        /* --- EXPERIMENT GRID --- */
+        .experiment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .experiment-card {
+            border: 1px solid #333;
+            background: #090909;
+            height: 300px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            transition: border-color 0.3s;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .experiment-card:hover {
+            border-color: var(--lab-accent);
+        }
+
+        .experiment-card:hover .exp-id {
+            color: var(--lab-accent);
+        }
+
+        .exp-id {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 2rem;
+            color: #222;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+
+        .exp-content h3 {
+            color: #FFF;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .exp-content p {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+        }
+
+        .status-indicator.active {
+            background: var(--lab-accent);
+            box-shadow: 0 0 10px var(--lab-accent);
+        }
+
+        /* Overlay */
+        .overlay-stripes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(45deg,
+                    rgba(0, 0, 0, 0),
+                    rgba(0, 0, 0, 0) 10px,
+                    rgba(255, 255, 255, 0.02) 10px,
+                    rgba(255, 255, 255, 0.02) 20px);
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-logo"><a href="index.html">SQ<sup>2</sup> / SHAFEEQ</a></div>
+        <div class="nav-menu-btn"><span>MENU</span>
+            <div class="menu-icon">
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="nav-overlay">
+        <div class="bg-grid menu-grid" style="z-index: -1;">
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line horizontal"></div>
+            <div class="grid-line horizontal"></div>
+            <div class="grid-line horizontal"></div>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+            <li class="nav-item"><a href="who.html" class="nav-link">WHO AM I?</a></li>
+            <li class="nav-item"><a href="achievements.html" class="nav-link">ACHIEVEMENTS</a></li>
+            <li class="nav-item"><a href="bio.html" class="nav-link">BIO</a></li>
+            <li class="nav-item"><a href="career.html" class="nav-link">CAREER</a></li>
+            <li class="nav-item"><a href="others.html" class="nav-link">OTHERS</a></li>
+        </ul>
+    </div>
+
+    <main class="lab-container">
+
+        <div class="header-section">
+            <div>
+                <span class="lab-badge">R&D SECTOR 7</span>
+                <h1 class="lab-title">THE<br><span class="filled">LAB</span></h1>
+            </div>
+            <div style="text-align: right;">
+                <p style="color: #666; font-size: 0.8rem;">EXPERIMENTAL<br>BUILD v2.0</p>
+            </div>
+        </div>
+
+        <div class="experiment-grid">
+
+            <div class="experiment-card">
+                <div class="overlay-stripes"></div>
+                <div class="status-indicator active"></div>
+                <span class="exp-id">01</span>
+                <div class="exp-content">
+                    <h3>WebGL Fluid</h3>
+                    <p>Real-time fluid simulation using custom GLSL shaders (In Progress).</p>
+                </div>
+            </div>
+
+            <div class="experiment-card">
+                <div class="overlay-stripes"></div>
+                <div class="status-indicator"></div>
+                <span class="exp-id">02</span>
+                <div class="exp-content">
+                    <h3>Raymarching</h3>
+                    <p>Volumetric rendering experiments. Performance optimization required.</p>
+                </div>
+            </div>
+
+            <div class="experiment-card">
+                <div class="overlay-stripes"></div>
+                <div class="status-indicator"></div>
+                <span class="exp-id">03</span>
+                <div class="exp-content">
+                    <h3>Audio Viz</h3>
+                    <p>Reacting geometries based on FFT audio data analysis.</p>
+                </div>
+            </div>
+
+            <div class="experiment-card" style="opacity: 0.5;">
+                <div class="overlay-stripes"></div>
+                <div class="status-indicator"></div>
+                <span class="exp-id">XX</span>
+                <div class="exp-content">
+                    <h3>[REDACTED]</h3>
+                    <p>Upcoming collaboration project.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script type="module" src="script.js"></script>
+    <script src="menu-fix.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const tl = gsap.timeline();
+
+            tl.fromTo(".lab-title",
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1, ease: "power4.out" }
+            )
+                .fromTo(".experiment-card",
+                    { y: 50, opacity: 0 },
+                    { y: 0, opacity: 1 || 0.5, duration: 0.6, stagger: 0.1 },
+                    "-=0.5"
+                );
+        });
+    </script>
+</body>
+
+</html>
