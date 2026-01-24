@@ -629,7 +629,7 @@ body.menu-open .nav-link {
     align-items: flex-end;
     /* Align bottom FLUSH */
 
-    /* STATIC MODE: No padding needed */
+    /* STATIC MODE */
     padding-bottom: 0;
 
     z-index: 5;
@@ -656,10 +656,8 @@ body.menu-open .nav-link {
 }
 
 .hero-figure {
-    /* STATIC RATIO FIT - SAFE */
-    height: auto !important;
-    max-height: 90vh !important;
-    /* Cap height, don't force it */
+    /* EXACT REFERENCE MATCH */
+    height: 90vh !important;
     width: auto !important;
     max-width: 95vw;
 
