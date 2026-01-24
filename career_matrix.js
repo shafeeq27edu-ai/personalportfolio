@@ -141,28 +141,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     gsap.set(".t-item", { y: 10 });
 
-    // --- 7. FOCUSED HERO OVERLAY ANIMATION (Organic Liquid Refinement) ---
+    // --- 7. FOCUSED HERO OVERLAY ANIMATION (Pinned & Organic) ---
     if (document.querySelector(".hero-overlay-card")) {
+        // We pin the entire hero section so the user "stops" to watch the transform
         const heroTl = gsap.timeline({
             scrollTrigger: {
-                trigger: "body",
+                trigger: "#career-hero",
                 start: "top top",
-                end: "+=600",
-                scrub: 1.5 // Slower, heavier scrub for "liquid" weight
+                end: "+=1500", // "Take a time" - long duration
+                pin: true,     // Hold section in place
+                scrub: 1,      // Smooth playback
+                anticipatePin: 1
             }
         });
 
-        // Combined Action: Organic Shrink + Blob Morph + Drift
+        // Combined Action: Organic Shrink + Blob Morph
+        // The card stays centered (pinned container) but shrinks nicely
         heroTl
-            // Card Movement & Shape
             .to(".hero-overlay-card", {
-                scaleX: 0.90,      // Breathing Scale (Squash)
-                scaleY: 0.85,      // Breathing Scale (Stretch) - little more shrink
-                y: 60,             // MOVED DOWN: Creates "Crop" at the top (gap appears)
-                x: 0,              // Centered (removed lateral drift for stability)
-                // Liquid Border Morph: Top-heavy to Bottom-heavy feel
-                borderRadius: "30% 30% 40% 40% / 40% 40% 30% 30%",
-                ease: "power2.inOut" // Organic easing
+                scaleX: 0.85,      // Significant shrink
+                scaleY: 0.85,
+                borderRadius: "30% 30% 40% 40% / 40% 40% 30% 30%", // Organic liquid shape
+                boxShadow: "0 40px 100px rgba(0,0,0,0.8)", // Deepen shadow
+                ease: "power2.inOut"
             })
             // Quote Reveal
             .to(".hero-quote", {
