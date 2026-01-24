@@ -615,6 +615,7 @@ body.menu-open .nav-link {
 /* --- Layer 3: Hero Portrait (Focus) --- */
 /* --- Layer 3: Hero Portrait (Focus) --- */
 /* --- Layer 3: Hero Portrait (Focus) --- */
+/* --- Layer 3: Hero Portrait (Focus) --- */
 .hero-figure-wrapper {
     position: absolute;
     top: 0;
@@ -628,9 +629,12 @@ body.menu-open .nav-link {
     align-items: flex-end;
     /* Align bottom */
 
+    /* SAFETY BUFFER for Parallax Movement */
+    padding-bottom: 60px;
+    box-sizing: border-box;
+
     z-index: 5;
     pointer-events: none;
-    /* Let clicks pass through empty areas */
 
     /* Prepare for GSAP Entry */
     opacity: 0;
@@ -645,7 +649,6 @@ body.menu-open .nav-link {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 70vh;
-    /* Localized glow behind figure */
     height: 70vh;
     background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
     z-index: -1;
@@ -654,12 +657,13 @@ body.menu-open .nav-link {
 }
 
 .hero-figure {
-    /* RATIO SAFE SIZING */
-    height: 90vh !important;
-    /* Dominant Height */
+    /* RATIO SAFE SIZING + BUFFER */
+    height: 85vh !important;
+    /* Reduced slightly to prevent top clipping */
     width: auto !important;
     /* Preserve Natural Aspect Ratio */
-    max-width: 95vw;
+    max-width: 90vw;
+    /* Horizontal Safety */
 
     object-fit: contain;
     object-position: bottom center;
@@ -668,43 +672,21 @@ body.menu-open .nav-link {
     position: relative;
     z-index: 1;
     pointer-events: auto;
-    /* Re-enable pointer for parallax */
 
-    /* Clean - No hard shadows, soft glow behind wrapper */
+    /* Clean */
     filter: none;
 
     will-change: transform, filter;
     transition: filter 0.3s ease;
 }
 
-/* Glow Effect */
-.hero-figure-wrapper::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.8;
-}
+/* Clean - No hard shadows, soft glow behind wrapper */
+filter: none;
 
-.hero-figure {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    /* Ensure full image visible */
-    object-position: center bottom;
-
-    /* Clean - No hard shadows, soft glow behind wrapper */
-    filter: none;
-
-    will-change: transform, filter;
-    /* Optimized for new effects */
-    transition: filter 0.3s ease;
+will-change: transform,
+filter;
+/* Optimized for new effects */
+transition: filter 0.3s ease;
 }
 
 /* Enhanced Portrait Interaction */
