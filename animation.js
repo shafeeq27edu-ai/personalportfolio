@@ -62,6 +62,7 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
         if (typeof gsap === 'undefined') return;
 
         // Reset Initial States
+        gsap.set('.hero-bg-layer', { opacity: 0, y: 40, scale: 1.08 });
         gsap.set('.hero-figure-wrapper', { opacity: 0, y: 40, scale: 1.08 });
         gsap.set('.hero-title', { opacity: 0, y: 30 });
         gsap.set('.hero-footer-ui', { opacity: 0, y: 15 });
@@ -71,13 +72,20 @@ console.log("🎬 ANIMATION MODULE LOADED - FINAL POLISH V5");
         const tl = gsap.timeline({ defaults: { ease: customEase } });
 
         // Hero Settle: Big entrance, smooth landing
-        tl.to('.hero-figure-wrapper', {
+        tl.to('.hero-bg-layer', {
             opacity: 1,
             y: 0,
             scale: 1,
             duration: 1.5,
             ease: customEase
         })
+            .to('.hero-figure-wrapper', {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 1.5,
+                ease: customEase
+            }, "<")
             .to('.hero-title', { opacity: 1, y: 0, duration: 1.2 }, "-=1.2")
             .to('.hero-footer-ui', { opacity: 1, y: 0, duration: 1.0 }, "-=1.0");
 

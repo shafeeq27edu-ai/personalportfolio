@@ -540,17 +540,24 @@ const playEntry = () => {
     // Reset Elements (Opacity only, minimal transform for stability)
     gsap.set(".nav-logo, .nav-menu-btn, .stat-box, .cta-button, .scroll-indicator, .hero-footer-ui", { opacity: 0 });
     gsap.set(".hero-title", { opacity: 0, y: 15 });
+    gsap.set(".hero-bg-layer", { opacity: 0, scale: 0.98 });
     gsap.set(".hero-figure-wrapper", { opacity: 0, scale: 0.98 });
 
     const tl = gsap.timeline();
 
     // 1. Soft Hero Entrance
-    tl.to(".hero-figure-wrapper", {
+    tl.to(".hero-bg-layer", {
         opacity: 1,
         scale: 1,
         duration: 1.8,
         ease: "power2.out"
     })
+        .to(".hero-figure-wrapper", {
+            opacity: 1,
+            scale: 1,
+            duration: 1.8,
+            ease: "power2.out"
+        }, "<") // Start together (or slightly delayed if preferred, but "<" means sync start)
         .to(".hero-title", {
             opacity: 1,
             y: 0,

@@ -232,22 +232,21 @@
             <!-- Hero Section -->
             <section id="hero">
                 <div class="hero-container">
-                    <!-- Parallax Background Layer -->
-                    <div class="parallax-layer bg-graphics">
-                        <img src="contours.png" alt="" class="contours">
+                    <!-- Unicorn Studio Animation -->
+                    <div class="hero-bg-layer"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;">
+                        <div data-us-project="K3X2sj7O0wDAtIVSjLH8"></div>
                     </div>
 
+                    <!-- Hero Portrait (Casual) -->
+                    <div class="hero-figure-wrapper">
+                        <img src="casual.png" alt="Shafeeq" class="hero-figure">
+                    </div>
 
                     <!-- Main Interactions -->
                     <div class="hero-content">
                         <div class="header-text-container">
                             <h1 class="hero-title">NEXT_GEN <br> <span class="outline">REVOLUTION</span></h1>
-                        </div>
-
-                        <!-- Hero Image (3D Tilt Ready) -->
-                        <div class="hero-figure-wrapper">
-                            <canvas id="hero-canvas"></canvas>
-                            <img src="casual.png" class="hero-figure" alt="Driver Portrait">
                         </div>
 
                         <div class="hero-footer-ui">
@@ -484,11 +483,32 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
+    <!-- Unicorn Studio Script -->
+    <script type="text/javascript">
+        !function () {
+            var u = window.UnicornStudio;
+            if (u && u.init) {
+                if (document.readyState === "loading") {
+                    document.addEventListener("DOMContentLoaded", function () { u.init() })
+                } else { u.init() }
+            } else {
+                window.UnicornStudio = { isInitialized: !1 };
+                var i = document.createElement("script");
+                i.src = "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.0.3/dist/unicornStudio.umd.js";
+                i.onload = function () {
+                    if (document.readyState === "loading") {
+                        document.addEventListener("DOMContentLoaded", function () { UnicornStudio.init() })
+                    } else { UnicornStudio.init() }
+                };
+                (document.head || document.body).appendChild(i)
+            }
+        }();
+    </script>
+
     <!-- Main Script (Active but Safe Mode) -->
     <script type="module" src="script.js"></script>
     <script src="menu-fix.js"></script>
     <script src="animation.js"></script>
-    <script type="module" src="liquid-effect.js"></script>
 </body>
 
 </html>

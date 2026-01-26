@@ -552,6 +552,29 @@ body.menu-open .nav-link {
     padding-bottom: 0;
 }
 
+/* --- New: Abstract 3D Hero Layer --- */
+.hero-3d-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    /* Behind UI */
+    pointer-events: none;
+    /* No interaction */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#hero-3d-canvas {
+    width: 100%;
+    height: 100%;
+    outline: none;
+}
+
 /* --- Layer 1: Background Graphics (Deepest) --- */
 .parallax-layer.bg-graphics {
     position: absolute;
@@ -615,65 +638,63 @@ body.menu-open .nav-link {
 /* --- Layer 3: Hero Portrait (Focus) --- */
 /* --- Layer 3: Hero Portrait (Focus) --- */
 /* --- Layer 3: Hero Portrait (Focus) --- */
-/* --- Layer 3: Hero Portrait (Focus) --- */
 .hero-figure-wrapper {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    /* Full Screen Container */
+    width: 100%;
+    height: 100%;
 
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    /* Align bottom FLUSH */
-
-    /* STATIC MODE */
-    padding-bottom: 0;
-
+    /* Ensure it sits on top of background but below UI */
     z-index: 5;
     pointer-events: none;
 
-    /* Prepare for GSAP Entry */
-    opacity: 0;
-    will-change: transform, opacity;
+    /* Removed flexbox to avoid conflicts */
+    display: block;
+
+    /* Animation init state handled by JS, but establish defaults */
+    opacity: 1;
+    transform: none;
 }
 
-/* Glow Effect */
 .hero-figure-wrapper::before {
+    /* Optional Glow - kept minimal */
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 70vh;
-    height: 70vh;
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    width: 60vh;
+    height: 60vh;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
     z-index: -1;
-    pointer-events: none;
-    opacity: 0.8;
 }
 
 .hero-figure {
-    /* EXACT REFERENCE MATCH */
-    height: 90vh !important;
-    width: auto !important;
+    /* STRICT POSITIONING */
+    position: absolute;
+    bottom: 0 !important;
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Sizing constraints */
+    height: 85vh;
+    /* Target height */
+    max-height: 90%;
+    /* Never exceed 90% of container */
+    width: auto;
+    /* Preserve aspect */
     max-width: 95vw;
+    /* Prevent width overflow */
 
     object-fit: contain;
     object-position: bottom center;
 
-    display: block;
-    position: relative;
     z-index: 1;
     pointer-events: auto;
+    /* Allow interaction if needed */
 
-    /* Clean */
-    filter: none;
-
-    will-change: transform, filter;
-    transition: filter 0.3s ease;
+    will-change: transform;
 }
 
 /* Enhanced Portrait Interaction */
